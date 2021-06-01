@@ -177,7 +177,7 @@ class ProductController extends Controller
             // three images
             $threeImgs = [];
             // return Resp::Success('ok', $catProd->random(3));
-            $randImgs = $catProd->isNotEmpty() ? $catProd->random(3) : [];
+            $randImgs = ($catProd->isNotEmpty() && ($catProd->count() > 2)) ? $catProd->random(3) : [];
             foreach ($randImgs as $key => $value) {
                 $threeImgs[] = $value->photo;
             }
@@ -195,6 +195,57 @@ class ProductController extends Controller
                     return [
                         'id' => $item->id,
                         'photo' => $item->photo,
+                        // 'price' => $item->price,
+                        // 'discounted_price' => $item->final_price
+                    ];
+                })
+            ];
+        }
+
+
+        return Resp::Success('تم', $arr);
+    }
+
+    public function topSuggestions()
+    {
+        $cat = new \App\Models\Category();
+        $prod = new Product();
+
+        // get random sub categories
+        $randomCat = $cat::inRandomOrder()->limit(1)->get()->groupBy('name');
+
+        $arr = [];
+        foreach ($randomCat as $key => $value) {
+
+            // bring products of this category Limit 100
+            $catProd = $prod::whereHas('category', function ($q) use ($key) {
+                $q->where('name', $key);
+            })->limit(10)->get();
+
+            //the category
+            $catName = $key;
+            // three images
+            $sliderImgs = [];
+
+            $randImgs = $catProd->isNotEmpty() ? $catProd : [];
+            foreach ($randImgs as $key => $value) {
+                $sliderImgs[] = $value->photo;
+            }
+
+            // important product (top rated)
+            $silderProduct = $catProd->sortByDesc('rate.*.rate')->values()->all();
+
+            // convert $silderProduct to collection
+            $col = collect($silderProduct)->slice(1, 10)->values();
+            $arr[] = [
+                'category' => $catName,
+                'slider' => $sliderImgs,
+                'products' => $col->map(function ($item, $key) {
+                    return [
+                        'id' => $item->id,
+                        'photo' => $item->photo,
+                        'price' => $item->price,
+                        'discounted_price' => $item->final_price
                     ];
                 })
             ];

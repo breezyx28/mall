@@ -81,6 +81,8 @@ Route::group(['prefix' => GUEST], function () {
 
     // Suggestions from products
     Route::get('suggestions', [ProductController::class, 'suggestions']);
+    // top slider
+    Route::get('topSuggestions', [ProductController::class, 'topSuggestions']);
     // search product with filter
     Route::post('search', [SearchController::class, 'search']);
 
