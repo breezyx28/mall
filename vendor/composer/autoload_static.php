@@ -42,6 +42,7 @@ class ComposerStaticInita59789df4b479f3ec74f1c7fcb9d949e
         '59e8d1fa370d8726967e4efcef574629' => __DIR__ . '/../..' . '/app/helper/authUser.php',
         '1ac78a6c0660c7d2545321670be98db2' => __DIR__ . '/../..' . '/app/helper/array.php',
         '7d5131f15049bd209ac85e205e0480cf' => __DIR__ . '/../..' . '/app/helper/sendMsg.php',
+        'd50d79132c01477c1b3a785d34752d0c' => __DIR__ . '/../..' . '/app/helper/calcPercent.php',
     );
 
     public static $prefixLengthsPsr4 = array (

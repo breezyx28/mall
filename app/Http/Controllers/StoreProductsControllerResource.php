@@ -6,10 +6,11 @@ use App\Events\StoreProductEvent;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Helper\ResponseMessage as Resp;
-use App\Helper\ValidateArray;
+use App\Helper\CalcPercent as Per;
 use App\Http\Requests\ProductsRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\StoreProduct;
+use Error;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -43,15 +44,22 @@ class StoreProductsControllerResource extends Controller
 
         $product = new \App\Models\Product();
 
+        // if (isset($validate->addetionalPrice)) {
+        //     if (Per::percent($validate->price, @$validate->discount ?? 0) < $validate->addetionalPrice) {
+        //         // return Resp::Success('ok', [
+        //         //     'data' => Per::percent($validate->price, @$validate->discount ?? 0) > $validate->addetionalPrice,
+        //         //     'percent' => Per::percent($validate->price, @$validate->discount ?? 0)
+        //         // ]);
+        //         return Resp::Error('قيمة القيمة الإضافية أكبر من السعر');
+        //     }
+        // }
+
         foreach ($validate as $key => $value) {
 
             if (isset($validate->store_id)) {
                 $this->storeID = $validate->store_id;
             }
 
-            // if (isset($validate->description)) {
-            //     $validate->description = json_encode($validate->description);
-            // }
 
             $product->$key = $value;
         }

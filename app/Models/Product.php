@@ -74,9 +74,9 @@ class Product extends Model
             $discount = 0;
         }
 
-        $discountedValue = ($price * ($discount / 100)) + ((int) $addPrice);
+        $discountedValue = ($price * ($discount / 100));
 
-        return ($price - $discountedValue);
+        return ($price + ((int) $addPrice)) - ($discountedValue);
     }
 
     // make scope
