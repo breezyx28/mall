@@ -254,4 +254,61 @@ class ProductController extends Controller
 
         return Resp::Success('تم', $arr);
     }
+
+    public function webSuggestions()
+    {
+        $cat = new \App\Models\Category();
+        $prod = new Product();
+
+        // get random sub categories
+        $dept = $cat::distinct('department')->pluck('department')->all();
+        $randDept = collect($dept)->shuffle()->take(5);
+        $randomDep = $cat::whereIn('department', $randDept)->get()->groupBy('department');
+
+        return Resp::Success('تم', $randomDep);
+
+        $arr = [];
+        foreach ($randomDep as $key => $value) {
+
+            // bring products of this category Limit 100
+            $catProd = $prod::whereHas('category', function ($q) use ($key) {
+                $q->where('department', $key);
+            })->limit(100)->get();
+
+            //the category
+            // $catName = $value['name'];
+            $depName = $key;
+            // three images
+            // $threeImgs = [];
+            // return Resp::Success('ok', $catProd->random(3));
+            // $randImgs = ($catProd->isNotEmpty() && ($catProd->count() > 2)) ? $catProd->random(3) : [];
+            // foreach ($randImgs as $key => $value) {
+            //     $threeImgs[] = $value->photo;
+            // }
+
+            // important product (top rated)
+            $topProd = $catProd->sortByDesc('rate.*.rate')->values()->all();
+
+            // convert $topProd to collection
+            $col = collect($topProd)->slice(1, 10)->values();
+            $arr[] = [
+                'department' => $depName,
+                // 'watchAll' => $catName,
+                // 'imgs' => $threeImgs,
+                'randomProducts' => $col->map(function ($item, $key) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'note' => $item->note,
+                        'photo' => $item->photo,
+                        'price' => $item->price,
+                        'discounted_price' => $item->final_price
+                    ];
+                })
+            ];
+        }
+
+
+        return Resp::Success('تم', $arr);
+    }
 }

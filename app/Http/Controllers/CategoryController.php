@@ -72,4 +72,12 @@ class CategoryController extends Controller
 
         return Resp::Success('تم بنجاح', $data);
     }
+
+    public function ourNew()
+    {
+    }
+
+    public function tempOffers()
+    {
+    }
 }
