@@ -265,7 +265,7 @@ class ProductController extends Controller
         $randDept = collect($dept)->shuffle()->take(5);
         $randomDep = $cat::whereIn('department', $randDept)->get()->groupBy('department');
 
-        return Resp::Success('تم', $randomDep);
+        // return Resp::Success('تم', $randomDep);
 
         $arr = [];
         foreach ($randomDep as $key => $value) {
