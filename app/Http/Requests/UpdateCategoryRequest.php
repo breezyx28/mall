@@ -30,7 +30,8 @@ class UpdateCategoryRequest extends FormRequest
             'subCategory' => 'string|max:200',
             'status' => 'boolean',
             'sub_img' => 'image|mimes:png,jpg',
-            'cat_img' => 'image|mimes:png,jpg'
+            'cat_img' => 'image|mimes:png,jpg',
+            'department' => 'string|max:100',
         ];
     }
 
