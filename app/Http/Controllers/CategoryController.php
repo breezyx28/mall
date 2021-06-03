@@ -73,11 +73,35 @@ class CategoryController extends Controller
         return Resp::Success('تم بنجاح', $data);
     }
 
-    public function ourNew()
+    public function ourNew($request)
     {
+        $validate = (object) $request->validate([
+            'limit' => 'integer',
+            'days' => 'integer',
+        ]);
+
+        // bring all new products
+        $data = \App\Models\Product::where('created_at', '>', \Carbon\Carbon::now()->subDays($validate->days ?? 30))->limit($validate->limit ?? 10)->get();
+
+        return Resp::Success('تم', $data);
     }
 
-    public function tempOffers()
+    public function latest(int $limit)
     {
+        // bring all latest products
+        $data = \App\Models\Product::orderBy('id', 'DESC')->limit($limit)->first();
+
+        return Resp::Success('تم', $data);
+    }
+
+    public function tempOffers($request)
+    {
+        $validate = (object) $request->validate([
+            'limit' => 'integer',
+        ]);
+
+        $data = \App\Models\Product::where('discount', '>', 0)->limit($validate->limit ?? 10)->groupBy('discount');
+
+        return Resp::Success('تم', $data);
     }
 }

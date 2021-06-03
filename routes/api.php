@@ -79,12 +79,21 @@ Route::group(['prefix' => GUEST], function () {
     Route::get('getCategories', [CategoryController::class, 'getCategories']);
     Route::get('getSubCategories', [CategoryController::class, 'getSubCategories']);
 
+
+    /* suggestion part */
     // Suggestions from products
     Route::get('suggestions', [ProductController::class, 'suggestions']);
     // top slider
     Route::get('topSuggestions', [ProductController::class, 'topSuggestions']);
     // web suggestions
     Route::get('webSuggestions', [ProductController::class, 'webSuggestions']);
+    // new stuff suggestion
+    Route::get('ourNew', [ProductController::class, 'ourNew']);
+    // discount offers suggestion
+    Route::get('tempOffers', [ProductController::class, 'tempOffers']);
+    // latest suggestion
+    Route::get('latest', [ProductController::class, 'latest']);
+
 
     // search product with filter
     Route::post('search', [SearchController::class, 'search']);
