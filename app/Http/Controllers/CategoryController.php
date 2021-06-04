@@ -10,12 +10,14 @@ class CategoryController extends Controller
     public function categoryList(Request $request)
     {
         $validate = (object) $request->validate([
-            'groupBy' => 'required|string'
+            'groupBy' => 'required|string',
+            'limit' => 'numeric'
         ], [
-            'groupBy' => 'هذا الحقل متوفر'
+            'groupBy' => 'هذا غير الحقل متوفر',
+            'limit' => 'يجب ان يكون العنصر ال limit رقمي',
         ]);
 
-        $data = \App\Models\Category::all()->groupBy($validate->groupBy);
+        $data = \App\Models\Category::all()->groupBy($validate->groupBy)->take($validate->limit);
 
         return Resp::Success('ok', $data);
     }
