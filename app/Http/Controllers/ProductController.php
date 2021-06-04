@@ -22,20 +22,6 @@ class ProductController extends Controller
         $orders = DB::table('orders');
         $products = new \App\Models\Product();
 
-        // // products of this week
-        // $prods = $orders
-        //     ->whereDate('created_at', '>', Carbon::now()->subDays(7))
-        //     ->get('product_id');
-
-        // // all products id
-        // $plk = $prods->pluck('product_id');
-
-        // // loop through
-        // $arr = [];
-        // foreach ($plk as $key => $value) {
-        //     array_push($arr[$value], $prods->where('product_id', $value)->count());
-        // }
-
         $top = [
             'sells' => function () use ($orders, $validate) {
                 return $orders
@@ -103,6 +89,7 @@ class ProductController extends Controller
         $validate = (object) $request->validate([
             'category' => 'string',
             'subCategory' => 'string',
+            'department' => 'string'
         ]);
 
         if (isset($validate->category) && !isset($validate->subCategory)) {
@@ -116,6 +103,14 @@ class ProductController extends Controller
         if (isset($validate->subCategory) && !isset($validate->category)) {
             $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
                 $query->where('subCategory', '=', $validate->subCategory);
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
+
+            return Resp::Success('تم', $filtered);
+        }
+
+        if (isset($validate->department) && !isset($validate->category) && !isset($validate->subCategory)) {
+            $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
+                $query->where('department', $validate->department);
             })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
 
             return Resp::Success('تم', $filtered);
@@ -137,7 +132,7 @@ class ProductController extends Controller
             }
         }
 
-        if (!isset($validate->subCategory) && !isset($validate->category)) {
+        if (!isset($validate->subCategory) && !isset($validate->category) && !isset($validate->department)) {
 
             try {
                 //code...
