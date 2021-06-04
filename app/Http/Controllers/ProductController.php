@@ -288,6 +288,7 @@ class ProductController extends Controller
                         'id' => $item->id,
                         'name' => $item->name,
                         'note' => $item->note,
+                        'description' => $item->description,
                         'photo' => $item->photo,
                         'price' => $item->price,
                         'discounted_price' => $item->final_price
