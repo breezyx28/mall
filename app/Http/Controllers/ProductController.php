@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -265,36 +266,23 @@ class ProductController extends Controller
         $randDept = collect($dept)->shuffle()->take(5);
         $randomDep = $cat::whereIn('department', $randDept)->get()->groupBy('department');
 
-        // return Resp::Success('تم', $randomDep);
-
         $arr = [];
         foreach ($randomDep as $key => $value) {
-
             // bring products of this category Limit 100
             $catProd = $prod::whereHas('category', function ($q) use ($key) {
                 $q->where('department', $key);
             })->limit(100)->get();
 
             //the category
-            // $catName = $value['name'];
             $depName = $key;
-            // three images
-            // $threeImgs = [];
-            // return Resp::Success('ok', $catProd->random(3));
-            // $randImgs = ($catProd->isNotEmpty() && ($catProd->count() > 2)) ? $catProd->random(3) : [];
-            // foreach ($randImgs as $key => $value) {
-            //     $threeImgs[] = $value->photo;
-            // }
 
             // important product (top rated)
-            $topProd = $catProd->sortByDesc('rate.*.rate')->values()->all();
+            $topProd = $catProd->sortByDesc('rate.*.rate')->take(10);
 
             // convert $topProd to collection
-            $col = collect($topProd)->slice(1, 10)->values();
+            $col = collect($topProd);
             $arr[] = [
                 'department' => $depName,
-                // 'watchAll' => $catName,
-                // 'imgs' => $threeImgs,
                 'randomProducts' => $col->map(function ($item, $key) {
                     return [
                         'id' => $item->id,
