@@ -141,7 +141,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('profile', [LoginController::class, 'profile']);
         Route::post('logout', [LoginController::class, 'logout']);
         Route::put('resetPassword', [LoginController::class, 'resetPassword']);
-        Route::put('updateProfile', [LoginController::class, 'updateProfile']);
+        Route::post('updateProfile', [LoginController::class, 'updateProfile']);
 
         // user favourit
         Route::apiResource('favourit', FavouritControllerResource::class)->except('update');

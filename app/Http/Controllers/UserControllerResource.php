@@ -95,10 +95,7 @@ class UserControllerResource extends Controller
 
         foreach ($validate as $key => $value) {
 
-            if ($validate->$key == 'thumbnail') {
-                // $user->thumbnail = null;
-                $User->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
-            }
+
 
             if ($validate->$key == 'birthDate') {
 
@@ -106,6 +103,11 @@ class UserControllerResource extends Controller
             }
 
             $User->$key = $value;
+        }
+
+        if (isset($request['thumbnail'])) {
+            // $user->thumbnail = null;
+            $User->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
         }
 
         try {

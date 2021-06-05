@@ -69,14 +69,6 @@ class LoginController extends Controller
 
         foreach ($validate as $key => $value) {
 
-            if ($validate->$key == 'thumbnail') {
-                // $user->thumbnail = null;
-                $user->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
-            }
-            if ($validate->$key == 'password') {
-                $user->password = null;
-            }
-
             if ($validate->$key == 'birthDate') {
 
                 $user->birthDate = date('Y-m-d', strtotime($validate->birthDate));
@@ -85,6 +77,10 @@ class LoginController extends Controller
             $user->$key = $value;
         }
 
+        if (isset($request['thumbnail'])) {
+            // $user->thumbnail = null;
+            $user->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
+        }
 
         try {
             $user->save();
