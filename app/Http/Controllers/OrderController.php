@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\InvoiceEvent;
+
 use App\Helper\ResponseMessage as Resp;
-use App\Http\Requests\OrdersRequest;
-use App\Models\Invoice;
+
+
 use App\Models\Order;
-use App\Models\OrdersNumber;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
@@ -37,6 +36,16 @@ class OrderController extends Controller
         $data = collect($orders->groupBy('orderNumber.orderNumber')->all());
 
         return Resp::Success('تم', $data);
+    }
+
+    public function webOrders()
+    {
+        $orders = \App\Models\Order::with('product', 'state', 'orderNumber')
+            ->where(['user_id' => auth()->user()->id])->get();
+
+        $data = collect($orders->groupBy('orderNumber.orderNumber')->all());
+
+        return Resp::Success('تم', collect($data));
     }
 
     public function getMyOrder(Request $request)
