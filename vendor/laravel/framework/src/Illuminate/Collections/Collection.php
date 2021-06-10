@@ -75,7 +75,7 @@ class Collection implements ArrayAccess, Enumerable
         $items = $this->map(function ($value) use ($callback) {
             return $callback($value);
         })->filter(function ($value) {
-            return ! is_null($value);
+            return !is_null($value);
         });
 
         if ($count = $items->count()) {
@@ -93,7 +93,7 @@ class Collection implements ArrayAccess, Enumerable
     {
         $values = (isset($key) ? $this->pluck($key) : $this)
             ->filter(function ($item) {
-                return ! is_null($item);
+                return !is_null($item);
             })->sort()->values();
 
         $count = $values->count();
@@ -184,7 +184,8 @@ class Collection implements ArrayAccess, Enumerable
     public function crossJoin(...$lists)
     {
         return new static(Arr::crossJoin(
-            $this->items, ...array_map([$this, 'getArrayableItems'], $lists)
+            $this->items,
+            ...array_map([$this, 'getArrayableItems'], $lists)
         ));
     }
 
@@ -325,7 +326,7 @@ class Collection implements ArrayAccess, Enumerable
     {
         if ($keys instanceof Enumerable) {
             $keys = $keys->all();
-        } elseif (! is_array($keys)) {
+        } elseif (!is_array($keys)) {
             $keys = func_get_args();
         }
 
@@ -420,7 +421,7 @@ class Collection implements ArrayAccess, Enumerable
      */
     public function groupBy($groupBy, $preserveKeys = false)
     {
-        if (! $this->useAsCallable($groupBy) && is_array($groupBy)) {
+        if (!$this->useAsCallable($groupBy) && is_array($groupBy)) {
             $nextGroups = $groupBy;
 
             $groupBy = array_shift($nextGroups);
@@ -433,14 +434,14 @@ class Collection implements ArrayAccess, Enumerable
         foreach ($this->items as $key => $value) {
             $groupKeys = $groupBy($value, $key);
 
-            if (! is_array($groupKeys)) {
+            if (!is_array($groupKeys)) {
                 $groupKeys = [$groupKeys];
             }
 
             foreach ($groupKeys as $groupKey) {
                 $groupKey = is_bool($groupKey) ? (int) $groupKey : $groupKey;
 
-                if (! array_key_exists($groupKey, $results)) {
+                if (!array_key_exists($groupKey, $results)) {
                     $results[$groupKey] = new static;
                 }
 
@@ -450,7 +451,7 @@ class Collection implements ArrayAccess, Enumerable
 
         $result = new static($results);
 
-        if (! empty($nextGroups)) {
+        if (!empty($nextGroups)) {
             return $result->map->groupBy($nextGroups, $preserveKeys);
         }
 
@@ -493,7 +494,7 @@ class Collection implements ArrayAccess, Enumerable
         $keys = is_array($key) ? $key : func_get_args();
 
         foreach ($keys as $value) {
-            if (! array_key_exists($value, $this->items)) {
+            if (!array_key_exists($value, $this->items)) {
                 return false;
             }
         }
@@ -512,7 +513,7 @@ class Collection implements ArrayAccess, Enumerable
     {
         $first = $this->first();
 
-        if (is_array($first) || (is_object($first) && ! $first instanceof Stringable)) {
+        if (is_array($first) || (is_object($first) && !$first instanceof Stringable)) {
             return implode($glue, $this->pluck($value)->all());
         }
 
@@ -539,7 +540,8 @@ class Collection implements ArrayAccess, Enumerable
     public function intersectByKeys($items)
     {
         return new static(array_intersect_key(
-            $this->items, $this->getArrayableItems($items)
+            $this->items,
+            $this->getArrayableItems($items)
         ));
     }
 
@@ -580,7 +582,7 @@ class Collection implements ArrayAccess, Enumerable
 
         $finalItem = $collection->pop();
 
-        return $collection->implode($glue).$finalGlue.$finalItem;
+        return $collection->implode($glue) . $finalGlue . $finalItem;
     }
 
     /**
@@ -651,7 +653,7 @@ class Collection implements ArrayAccess, Enumerable
 
             $value = reset($pair);
 
-            if (! isset($dictionary[$key])) {
+            if (!isset($dictionary[$key])) {
                 $dictionary[$key] = [];
             }
 
@@ -913,7 +915,7 @@ class Collection implements ArrayAccess, Enumerable
      */
     public function search($value, $strict = false)
     {
-        if (! $this->useAsCallable($value)) {
+        if (!$this->useAsCallable($value)) {
             return array_search($value, $this->items, $strict);
         }
 
@@ -1116,7 +1118,7 @@ class Collection implements ArrayAccess, Enumerable
      */
     public function sortBy($callback, $options = SORT_REGULAR, $descending = false)
     {
-        if (is_array($callback) && ! is_callable($callback)) {
+        if (is_array($callback) && !is_callable($callback)) {
             return $this->sortByMany($callback);
         }
 
@@ -1161,7 +1163,7 @@ class Collection implements ArrayAccess, Enumerable
                 $prop = $comparison[0];
 
                 $ascending = Arr::get($comparison, 1, true) === true ||
-                             Arr::get($comparison, 1, true) === 'asc';
+                    Arr::get($comparison, 1, true) === 'asc';
 
                 $result = 0;
 
@@ -1170,7 +1172,7 @@ class Collection implements ArrayAccess, Enumerable
                 } else {
                     $values = [data_get($a, $prop), data_get($b, $prop)];
 
-                    if (! $ascending) {
+                    if (!$ascending) {
                         $values = array_reverse($values);
                     }
 

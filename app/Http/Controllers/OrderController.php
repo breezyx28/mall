@@ -45,7 +45,7 @@ class OrderController extends Controller
 
         $data = collect($orders->groupBy('orderNumber.orderNumber')->all());
 
-        return Resp::Success('تم', $data->toArray());
+        return Resp::Success('تم', collect($data)->sortDesc());
     }
 
     public function getMyOrder(Request $request)
