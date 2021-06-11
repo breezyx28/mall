@@ -18,6 +18,26 @@ class StoreProductsControllerResource extends Controller
 {
     private $storeID;
 
+    function generateBarcodeNumber()
+    {
+        $number = mt_rand(1000000000, mt_getrandmax()); // better than rand()
+
+        // call the same function if the barcode exists already
+        if ($this->barcodeNumberExists($number)) {
+            return $this->generateBarcodeNumber();
+        }
+
+        // otherwise, it's valid and can be used
+        return $number;
+    }
+
+    function barcodeNumberExists($number)
+    {
+        // query the database and return a boolean
+        // for instance, it might look like this in Laravel
+        return Product::whereBarCode($number)->exists();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -44,25 +64,17 @@ class StoreProductsControllerResource extends Controller
 
         $product = new \App\Models\Product();
 
-        // if (isset($validate->addetionalPrice)) {
-        //     if (Per::percent($validate->price, @$validate->discount ?? 0) < $validate->addetionalPrice) {
-        //         // return Resp::Success('ok', [
-        //         //     'data' => Per::percent($validate->price, @$validate->discount ?? 0) > $validate->addetionalPrice,
-        //         //     'percent' => Per::percent($validate->price, @$validate->discount ?? 0)
-        //         // ]);
-        //         return Resp::Error('قيمة القيمة الإضافية أكبر من السعر');
-        //     }
-        // }
-
         foreach ($validate as $key => $value) {
 
             if (isset($validate->store_id)) {
                 $this->storeID = $validate->store_id;
             }
 
-
             $product->$key = $value;
         }
+
+        // generating a unique barcode number
+        $product->bar_code = $this->generateBarcodeNumber();
 
         $product->photo = Str::of($request->file('photo')->storePublicly('Product'));
 
