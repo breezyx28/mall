@@ -53,7 +53,7 @@ class Product extends Model
 
         // return $base_url . ':' . $_SERVER['SERVER_PORT'] . "/storage/" . $value;
 
-        return 'https://laravelstorage.sgp1.digitaloceanspaces.com/' . $value;
+        return 'https://laravelstorage1.sgp1.digitaloceanspaces.com/' . $value;
     }
 
     public function getFinalPriceAttribute()
