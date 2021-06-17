@@ -67,7 +67,6 @@ class UserOrderControllerResource extends Controller
             $validate['orders'][$key]['order_address'] = $value['order_address'] ?? null;
             $validate['orders'][$key]['created_at'] = Carbon::now();
             $validate['orders'][$key]['updated_at'] = Carbon::now();
-
             $prod = \App\Models\Product::find($value['product_id']);
             array_push($totals, (($prod->final_price) * $value['amount']));
             array_push($actualTotals, (($prod->price) * $value['amount']));

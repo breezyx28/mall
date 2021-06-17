@@ -17,8 +17,6 @@ class CreateAdditionalDescriptionsTable extends Migration
             $table->id();
             $table->string('color')->nullable();
             $table->bigInteger('weight')->nullable();
-            $table->string('material')->nullable();
-            $table->string('size')->nullable();
             $table->string('for')->nullable();
             $table->string('company')->nullable();
             $table->date('expireDate')->nullable();

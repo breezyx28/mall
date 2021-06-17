@@ -18,6 +18,7 @@ class CreateAdsTable extends Migration
             $table->string('title');
             $table->string('content');
             $table->string('photo');
+            $table->string('promotionTitle');
             $table->foreignId('product_id')->constrained();
             $table->foreignId('category_id')->constrained();
             $table->date('expireDate');
