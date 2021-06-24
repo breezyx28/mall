@@ -193,7 +193,7 @@ class OrderController extends Controller
         $order = new Order();
 
         // get only my store product form order model
-        $myProducts = $order::with('state:id,name,city', 'user:id,firstName,middleName,lastName,userName', 'product:id,name,price,discount,addetionalPrice', 'orderNumber')->whereHas('product.store', function ($q) {
+        $myProducts = $order::with('state:id,name,city', 'user:id,firstName,middleName,lastName,userName', 'product:id,name,price,discount,addetionalPrice,bar_code', 'orderNumber')->whereHas('product.store', function ($q) {
             $q->where('user_id', auth()->user()->id);
         })->get();
 
