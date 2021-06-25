@@ -18,7 +18,7 @@ class ProducsDetails
             'rate' => collect($result->whereNotNull('rate.*.rate')->pluck('rate.*.rate'))->filter(function ($value, $key) {
                 return !empty($value);
             })->collapse(),
-            'discount' => $result->where('discount', '!=', 0)->values()->pluck('discount')
+            'discount' => collect($result->where('discount', '!=', 0)->values()->pluck('discount'))->unique()
         ];
 
         // return final result
