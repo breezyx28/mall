@@ -42,4 +42,5 @@ return array(
     '1ac78a6c0660c7d2545321670be98db2' => $baseDir . '/app/helper/array.php',
     '7d5131f15049bd209ac85e205e0480cf' => $baseDir . '/app/helper/sendMsg.php',
     'd50d79132c01477c1b3a785d34752d0c' => $baseDir . '/app/helper/calcPercent.php',
+    '123a3e919a10efd248fce420a4d26abc' => $baseDir . '/app/helper/productDetails.php',
 );

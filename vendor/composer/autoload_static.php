@@ -43,6 +43,7 @@ class ComposerStaticInita59789df4b479f3ec74f1c7fcb9d949e
         '1ac78a6c0660c7d2545321670be98db2' => __DIR__ . '/../..' . '/app/helper/array.php',
         '7d5131f15049bd209ac85e205e0480cf' => __DIR__ . '/../..' . '/app/helper/sendMsg.php',
         'd50d79132c01477c1b3a785d34752d0c' => __DIR__ . '/../..' . '/app/helper/calcPercent.php',
+        '123a3e919a10efd248fce420a4d26abc' => __DIR__ . '/../..' . '/app/helper/productDetails.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -1596,6 +1597,7 @@ class ComposerStaticInita59789df4b479f3ec74f1c7fcb9d949e
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\AdsSeeder' => __DIR__ . '/../..' . '/database/seeders/AdsSeeder.php',
+        'Database\\Seeders\\CategorySeeder' => __DIR__ . '/../..' . '/database/seeders/CategorySeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',

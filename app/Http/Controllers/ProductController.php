@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseMessage as Resp;
+use App\Helper\ProducsDetails as Details;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -97,7 +98,7 @@ class ProductController extends Controller
                 $query->where('name', $validate->category);
             })->with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->get();
 
-            return Resp::Success('تم', $filtered);
+            return Resp::Success('تم', Details::details($filtered));
         }
 
         if (isset($validate->subCategory) && !isset($validate->category)) {
@@ -105,7 +106,7 @@ class ProductController extends Controller
                 $query->where('subCategory', '=', $validate->subCategory);
             })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
 
-            return Resp::Success('تم', $filtered);
+            return Resp::Success('تم', Details::details($filtered));
         }
 
         if (isset($validate->department) && !isset($validate->category) && !isset($validate->subCategory)) {
@@ -113,7 +114,7 @@ class ProductController extends Controller
                 $query->where('department', $validate->department);
             })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
 
-            return Resp::Success('تم', $filtered);
+            return Resp::Success('تم', Details::details($filtered));
         }
 
         if (isset($validate->subCategory) && isset($validate->category)) {
@@ -125,7 +126,7 @@ class ProductController extends Controller
                 })
                     ->get();
                 $all->load('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes');
-                return Resp::Success('تم', $all);
+                return Resp::Success('تم', Details::details($all));
             } catch (\Throwable $th) {
                 //throw $th;
                 return Resp::Error('حدث خطأ ما', $th->getMessage());
@@ -137,7 +138,7 @@ class ProductController extends Controller
             try {
                 //code...
                 $all = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->get();
-                return Resp::Success('تم', $all);
+                return Resp::Success('تم', Details::details($all));
             } catch (\Throwable $th) {
                 //throw $th;
                 return Resp::Error('حدث خطأ ما', $th->getMessage());

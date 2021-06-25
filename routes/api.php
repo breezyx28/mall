@@ -95,6 +95,7 @@ Route::group(['prefix' => GUEST], function () {
 
     // product page
     Route::get('initItems', [ProductController::class, 'initItems']);
+
     // search product with filter
     Route::post('search', [SearchController::class, 'search']);
 

@@ -47,7 +47,8 @@
             "app/helper/authUser.php",
             "app/helper/array.php",
             "app/helper/sendMsg.php",
-            "app/helper/calcPercent.php"
+            "app/helper/calcPercent.php",
+            "app/helper/productDetails.php"
         ]
     },
     "autoload-dev": {
