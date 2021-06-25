@@ -79,7 +79,6 @@ Route::group(['prefix' => GUEST], function () {
     Route::get('getCategories', [CategoryController::class, 'getCategories']);
     Route::get('getSubCategories', [CategoryController::class, 'getSubCategories']);
 
-
     /* suggestion part */
     // Suggestions from products
     Route::get('suggestions', [ProductController::class, 'suggestions']);
@@ -94,7 +93,8 @@ Route::group(['prefix' => GUEST], function () {
     // latest suggestion
     Route::get('latest', [ProductController::class, 'latest']);
 
-
+    // product page
+    Route::get('initItems', [ProductController::class, 'initItems']);
     // search product with filter
     Route::post('search', [SearchController::class, 'search']);
 
