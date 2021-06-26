@@ -46,6 +46,7 @@ class SearchController extends Controller
             'rate' => collect($result->whereNotNull('rate.*.rate')->pluck('rate.*.rate'))->filter(function ($value, $key) {
                 return !empty($value);
             })->collapse(),
+            'discount' => collect($result->where('discount', '!=', 0)->values()->pluck('discount'))->unique()
         ];
 
         // check if there is filter
@@ -72,6 +73,10 @@ class SearchController extends Controller
 
                 if (isset($validate->filter['weight'])) {
                     $result = collect($result->where('additional_description.weight', $validate->filter['weight'])->all());
+                }
+
+                if (isset($validate->filter['discount'])) {
+                    $result = collect($result->where('discount', $validate->filter['discount'])->all());
                 }
 
                 if (isset($validate->filter['expireDate'])) {
