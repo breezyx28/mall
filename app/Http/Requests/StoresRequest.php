@@ -31,7 +31,7 @@ class StoresRequest extends FormRequest
             'thumbnail' => 'image|mimes:jpg,jpeg,png',
             'phone' => 'required|unique:stores,phone|digits:10',
             'address' => 'string|max:191',
-            'user_id' => 'required|exists:users,id|integer',
+            'user_id' => 'required|exists:users,id|integer|unique:store,user_id',
             'bio' => 'required|string|max:191',
         ];
     }
@@ -60,6 +60,7 @@ class StoresRequest extends FormRequest
             'user_id.required' => 'حقل رقم مستخدم المتجر مطلوب',
             'user_id.exists' => 'حقل رقم مستخدم المتجر غير متوفر في السجلات',
             'user_id.integer' => 'حقل رقم مستخدم المتجر يجب ان يكون من النوع رقم صحيح',
+            'user_id.unique' => 'حقل رقم مستخدم المتجر مستخدم في متجر أخر ... لا يمكن استخدام مدير لمتجرين',
             'bio.required' => 'حقل معلومات المتجر مطلوب',
             'bio.string' => 'حقل معلومات المتجر يجب ان يكون من النوع نص',
         ];
