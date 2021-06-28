@@ -21,7 +21,7 @@ class ProductControllerResource extends Controller
      */
     public function index()
     {
-        $prod = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->get();
+        $prod = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', '!=', 0)->get();
         return Resp::Success('تم بنجاح', $prod);
     }
 

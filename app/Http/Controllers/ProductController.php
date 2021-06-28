@@ -30,7 +30,7 @@ class ProductController extends Controller
                     ->take(isset($validate->limit) ? $validate->limit : 10)
                     ->pluck('product_id');
             },
-            'rate' => $products->whereHas('rate', function ($q) use ($validate) {
+            'rate' => $products->where('status', '!=', 0)->whereHas('rate', function ($q) use ($validate) {
                 $q->select('rate')->limit(isset($validate->limit) ? $validate->limit : 10)->orderBy('rate');
             })->get(),
             'discount' => (function () use ($products, $validate) {
@@ -61,7 +61,7 @@ class ProductController extends Controller
                 '5' => 'like'
             ][$validate->exp];
 
-            $data = \App\Models\Product::with('category', 'store')->where($validate->column, $switch, $validate->value)->limit(isset($validate->limit) ? $validate->limit : 10)->orderBy('updated_at', 'desc')->get();
+            $data = \App\Models\Product::with('category', 'store')->where('status', 1)->andWhere($validate->column, $switch, $validate->value)->limit(isset($validate->limit) ? $validate->limit : 10)->orderBy('updated_at', 'desc')->get();
             return Resp::Success('تم', $data);
         } else {
             $data = \App\Models\Product::with('category', 'store')->where('status', 1)->limit($validate->limit)->orderBy('updated_at', 'desc')->get();
@@ -96,7 +96,7 @@ class ProductController extends Controller
         if (isset($validate->category) && !isset($validate->subCategory)) {
             $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
                 $query->where('name', $validate->category);
-            })->with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->get();
+            })->with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->get();
 
             return Resp::Success('تم', Details::details($filtered));
         }
@@ -104,7 +104,7 @@ class ProductController extends Controller
         if (isset($validate->subCategory) && !isset($validate->category)) {
             $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
                 $query->where('subCategory', '=', $validate->subCategory);
-            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
 
             return Resp::Success('تم', Details::details($filtered));
         }
@@ -112,7 +112,7 @@ class ProductController extends Controller
         if (isset($validate->department) && !isset($validate->category) && !isset($validate->subCategory)) {
             $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
                 $query->where('department', $validate->department);
-            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->get();
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
 
             return Resp::Success('تم', Details::details($filtered));
         }
@@ -123,7 +123,7 @@ class ProductController extends Controller
                 //code...
                 $all = \App\Models\Product::whereHas('category', function ($q) use ($validate) {
                     $q->where(['name' => $validate->category, 'subCategory' => $validate->subCategory]);
-                })
+                })->where('status', 1)
                     ->get();
                 $all->load('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes');
                 return Resp::Success('تم', Details::details($all));
@@ -137,7 +137,7 @@ class ProductController extends Controller
 
             try {
                 //code...
-                $all = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->get();
+                $all = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->get();
                 return Resp::Success('تم', Details::details($all));
             } catch (\Throwable $th) {
                 //throw $th;
@@ -148,7 +148,7 @@ class ProductController extends Controller
 
     public function randomProducts()
     {
-        $data = Product::inRandomOrder()->limit(3)->get();
+        $data = Product::inRandomOrder()->where('status', 1)->limit(3)->get();
 
         return Resp::Success('ok', $data);
     }
@@ -159,7 +159,7 @@ class ProductController extends Controller
         $prod = new Product();
 
         // get random sub categories
-        $randomCat = $cat::inRandomOrder()->limit(5)->get()->groupBy('name');
+        $randomCat = $cat::inRandomOrder()->where('status', 1)->limit(5)->get()->groupBy('name');
 
         $arr = [];
         foreach ($randomCat as $key => $value) {
@@ -167,7 +167,7 @@ class ProductController extends Controller
             // bring products of this category Limit 100
             $catProd = $prod::whereHas('category', function ($q) use ($key) {
                 $q->where('name', $key);
-            })->limit(100)->get();
+            })->where('status', '!=', 0)->limit(100)->get();
 
             //the category
             $catName = $key;
@@ -217,7 +217,7 @@ class ProductController extends Controller
             // bring products of this category Limit 100
             $catProd = $prod::whereHas('category', function ($q) use ($key) {
                 $q->where('name', $key);
-            })->limit(10)->get();
+            })->where('status', '!=', 0)->limit(10)->get();
 
             //the category
             $catName = $key;
@@ -267,7 +267,7 @@ class ProductController extends Controller
             // bring products of this category Limit 100
             $catProd = $prod::whereHas('category', function ($q) use ($key) {
                 $q->where('department', $key);
-            })->limit(100)->get();
+            })->where('status', '!=', 0)->limit(100)->get();
 
             //the category
             $depName = $key;
@@ -301,7 +301,7 @@ class ProductController extends Controller
     {
         // $validate = (object) $request->validated();
 
-        $result = \App\Models\Product::with('category', 'store', 'product_sizes', 'additional_description')->get();
+        $result = \App\Models\Product::with('category', 'store', 'product_sizes', 'additional_description')->where('status', '!=', 0)->get();
 
         // if there is a result
         if ($result->isEmpty()) {
