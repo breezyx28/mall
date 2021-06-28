@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\AuthUser;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ProductsRequest;
+use App\Http\Requests\UpdateProductAdmin;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
@@ -54,7 +55,7 @@ class ProductControllerResource extends Controller
      * @param  \App\Models\Product  $Product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $Product)
+    public function update(UpdateProductAdmin $request, Product $Product)
     {
         $validate = (object) $request->validated();
 

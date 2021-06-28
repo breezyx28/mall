@@ -107,6 +107,7 @@ class StoreProductsControllerResource extends Controller
             return Resp::Error('لا تملك هذا المنتج', null);
         }
 
+
         $validate = $request->validated();
 
         foreach ($validate as $key => $value) {

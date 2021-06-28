@@ -36,7 +36,7 @@ class ProductsRequest extends FormRequest
             'description' => 'string',
             'note' => 'string',
             'discount' => 'integer|max:100|min:0',
-            'addetionalPrice' => 'string',
+            // 'addetionalPrice' => 'string',        يفترض تكون الإضافة من قبل الأدمن
             'category_id' => 'required|integer|exists:categories,id',
             'store_id' => 'required|integer|exists:stores,id',
             'offerText' => 'string|max:191',

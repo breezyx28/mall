@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateProductRequest extends FormRequest
+class UpdateProductAdmin extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class UpdateProductRequest extends FormRequest
             'photo' => 'image|mimes:jpg,jpeg,png',
             'description' => 'string',
             'discount' => 'integer',
-            // 'addetionalPrice' => 'string',
+            'addetionalPrice' => 'string',
             'offerText' => 'string|max:191',
             'inventory' => 'integer',
             'status' => 'boolean',
