@@ -61,7 +61,7 @@ class ProductController extends Controller
                 '5' => 'like'
             ][$validate->exp];
 
-            $data = \App\Models\Product::with('category', 'store')->where('status', 1)->andWhere($validate->column, $switch, $validate->value)->limit(isset($validate->limit) ? $validate->limit : 10)->orderBy('updated_at', 'desc')->get();
+            $data = \App\Models\Product::with('category', 'store')->where('status', 1)->where($validate->column, $switch, $validate->value)->limit(isset($validate->limit) ? $validate->limit : 10)->orderBy('updated_at', 'desc')->get();
             return Resp::Success('تم', $data);
         } else {
             $data = \App\Models\Product::with('category', 'store')->where('status', 1)->limit($validate->limit)->orderBy('updated_at', 'desc')->get();
