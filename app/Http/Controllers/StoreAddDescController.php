@@ -15,7 +15,6 @@ class StoreAddDescController extends Controller
 
     public function storeAdditionalDescriptionBy($productID)
     {
-
         if (!in_array($productID, (array) $this->products())) {
             return Resp::Error('لا تملك هذا المنتج', null);
         }
