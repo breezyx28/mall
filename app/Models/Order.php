@@ -9,6 +9,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'order_props' => 'array',
+    ];
+
     // protected $appends = 'total_price';
 
     public function orderNumber()

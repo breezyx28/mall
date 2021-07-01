@@ -38,8 +38,9 @@ class OrdersRequest extends FormRequest
             'orders.*.order_address' => 'max:191',
             'orders.*.product_id' => 'required|integer|exists:products,id',
             'orders.*.order_props' => 'array',
-            'orders.*.order_props.*.color' => 'required|string',
-            'orders.*.order_props.*.size' => 'required|string',
+            'orders.*.order_props.*.color' => 'string',
+            'orders.*.order_props.*.size' => 'string',
+            'orders.*.order_props.*.id' => 'integer',
             'orders.*.amount' => ['required', 'integer', 'min:1', new AmountRule()],
         ];
     }

@@ -37,6 +37,8 @@ class UserOrderControllerResource extends Controller
         // validate inputs
         $validate = $request->validated();
 
+        // return Resp::Error('awda', $validate);
+
         $user = auth()->user();
 
         // generate uuid for order
@@ -63,6 +65,7 @@ class UserOrderControllerResource extends Controller
 
             $validate['orders'][$key]['orders_number_id'] = $ordersNumber->id;
             $validate['orders'][$key]['status'] = 'available';
+            $validate['orders'][$key]['order_props'] = json_encode([$value['order_props']]);
             $validate['orders'][$key]['user_id'] = $user->id;
             $validate['orders'][$key]['order_address'] = $value['order_address'] ?? null;
             $validate['orders'][$key]['created_at'] = Carbon::now();
@@ -79,7 +82,7 @@ class UserOrderControllerResource extends Controller
         $actualTotalPrice = collect($actualTotals)->sum();
 
         // $totalPrice = $totals->sum('final_price');
-
+        // return Resp::Error('awdaw', $validate['orders']);
         try {
 
             $order->insert($validate['orders']);
