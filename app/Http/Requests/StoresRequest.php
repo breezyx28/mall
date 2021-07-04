@@ -31,7 +31,7 @@ class StoresRequest extends FormRequest
             'thumbnail' => 'image|mimes:jpg,jpeg,png',
             'phone' => 'required|unique:stores,phone|digits:10',
             'address' => 'string|max:191',
-            'user_id' => 'required|exists:users,id|integer|unique:store,user_id',
+            'user_id' => 'required|exists:users,id|integer|unique:stores,user_id',
             'bio' => 'required|string|max:191',
         ];
     }
