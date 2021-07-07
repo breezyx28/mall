@@ -27,7 +27,7 @@ class AdditionalDescriptionsRequest extends FormRequest
     {
         return [
             'color' => 'array',
-            'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',
+            'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/',
             'weight' => 'string|max:100',
             'for' => 'string|max:191',
             'company' => 'string|max:191',

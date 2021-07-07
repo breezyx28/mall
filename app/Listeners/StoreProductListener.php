@@ -19,13 +19,12 @@ class StoreProductListener
         $storeProd->store_id = $event->storeID;
 
         DB::beginTransaction();
+
         try {
             $product->save();
             $storeProd->product_id = $product->id;
             $storeProd->user_id = auth()->user()->id;
             $storeProd->save();
-
-            Log::info('Issue :', ['storeProd' => $storeProd, 'product' => $product]);
 
             DB::commit();
             return Resp::Success('تم إضافة المنتج إلى المتجر', $product);
