@@ -103,7 +103,7 @@ class StoreProdPhotControllerResource extends Controller
 
         // remove old photo
         try {
-            $remove = Str::replaceFirst('https://laravelstorage.sgp1.digitaloceanspaces.com/', '', $storeProductPhoto->photo);
+            $remove = Str::replaceFirst('https://laravelstorage1.sgp1.digitaloceanspaces.com/', '', $storeProductPhoto->photo);
             //code...
             Storage::disk('spaces')->delete($remove);
         } catch (\Throwable $th) {

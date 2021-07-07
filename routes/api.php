@@ -174,7 +174,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::group(['prefix' => BASE, 'middleware' => 'storeWare'], function () {
 
         // store product
-        Route::ApiResource('product', StoreProductsControllerResource::class);
+        Route::post('product/{product}', [StoreProductsControllerResource::class, 'update']);
+        Route::ApiResource('product', StoreProductsControllerResource::class)->except('update');
 
         // store additional description
         Route::apiResource('storeAdditionalDescription', StoreAddDescControllerResource::class);
