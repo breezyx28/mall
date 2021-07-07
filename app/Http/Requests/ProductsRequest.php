@@ -15,7 +15,7 @@ class ProductsRequest extends FormRequest
      */
     public function authorize()
     {
-        if (auth()->user()->id == 2) {
+        if (auth()->user()->role_id == 2) {
 
             return true;
         }

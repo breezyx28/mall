@@ -45,9 +45,7 @@ class StoreProductsControllerResource extends Controller
      */
     public function index()
     {
-        $prod = \App\Models\StoreProduct::with(['store', 'product', 'user' => function ($query) {
-            $query->where('id', auth()->user()->id);
-        }])->get();
+        $prod = \App\Models\StoreProduct::with(['store', 'product', 'user'])->where('user_id', auth()->user()->id)->get();
 
         return Resp::Success('تم بنجاح', $prod);
     }

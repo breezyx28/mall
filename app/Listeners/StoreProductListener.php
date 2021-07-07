@@ -5,8 +5,7 @@ namespace App\Listeners;
 use App\Helper\ResponseMessage as Resp;
 use App\Models\Product;
 use App\Models\StoreProduct;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class StoreProductListener
@@ -25,6 +24,9 @@ class StoreProductListener
             $storeProd->product_id = $product->id;
             $storeProd->user_id = auth()->user()->id;
             $storeProd->save();
+
+            Log::info('Issue :', ['storeProd' => $storeProd, 'product' => $product]);
+
             DB::commit();
             return Resp::Success('تم إضافة المنتج إلى المتجر', $product);
         } catch (\Exception $e) {
