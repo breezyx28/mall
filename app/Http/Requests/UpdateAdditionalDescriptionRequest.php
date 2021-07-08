@@ -27,7 +27,7 @@ class UpdateAdditionalDescriptionRequest extends FormRequest
     {
         return [
             'color' => 'array',
-            'color.*' => 'string|max:191',
+            'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/',
             'weight' => 'integer',
             'for' => 'string|max:191',
             'company' => 'string|max:191',
@@ -50,7 +50,7 @@ class UpdateAdditionalDescriptionRequest extends FormRequest
     {
         return [
             'color.array' => 'حقل اللون يجب ان يكون من النوع مصفوفة',
-            'color.*.string' => 'الألوان يجب ان تكون من النوع نص',
+            'color.*.regex' => 'الألوان يجب ان تكون مطابقة لمعايير الألوان ال rgb, hex, hsl',
             'color.*.max' => 'أحد الألوان تجاوز الحد المسموح للطول',
             'weight.integer' => 'حقل الوزن يجب ان يكون من النوع رقم صحيح',
             'for.string' => 'حقل التخصيص يجب ان يكون من النوع نص',
