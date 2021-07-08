@@ -25,7 +25,19 @@ class ColorRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        if (preg_match("/[a-zA-Z0-9]{6}/", $value)) {
+            return true;
+        } else if (preg_match('/rgb\((?:\s*\d+\s*,){2}\s*[\d]+\)/', $value)) {
+            return true;
+        } else if (preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $value)) {
+            return true;
+        } else if (preg_match('/hsl\(\s*\d+\s*(\s*\,\s*\d+\%){2}\)/', $value)) {
+            return true;
+        } else if (preg_match('/hsla\(\s*\d+(\s*,\s*\d+\s*\%){2}\s*\,\s*[\d\.]+\)/', $value)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -35,6 +47,6 @@ class ColorRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'اللون غير مطابق لمعايير اللون الرمزية';
     }
 }

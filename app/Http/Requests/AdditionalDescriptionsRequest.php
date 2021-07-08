@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ColorRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,7 +28,8 @@ class AdditionalDescriptionsRequest extends FormRequest
     {
         return [
             'color' => 'array',
-            'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/',
+            'color.*' => [new ColorRule()],
+            // 'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',
             'weight' => 'string|max:100',
             'for' => 'string|max:191',
             'company' => 'string|max:191',
