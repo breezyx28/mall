@@ -30,7 +30,8 @@ class UpdateProductRequest extends FormRequest
             'price' => 'integer',
             'photo' => 'image|mimes:jpg,jpeg,png',
             'description' => 'string',
-            'discount' => 'integer',
+            'note' => 'string',
+            'discount' => 'integer|min:0|max:100',
             // 'addetionalPrice' => 'string',
             'offerText' => 'string|max:191',
             'inventory' => 'integer',
@@ -46,5 +47,25 @@ class UpdateProductRequest extends FormRequest
             $messages[] = $message;
         }
         throw new HttpResponseException(response()->json(['success' => false, 'errors' => $messages], 200));
+    }
+
+    public function messages()
+    {
+        return [
+            'name.string' => 'إسم المنتج يجب ان يكون نص',
+            'name.max' => 'إسم المنتج تجواز الحد الأقصى',
+            'price.integer' => 'السعر يجب ان يكون رقمي',
+            'photo.image' => 'الصورة يجب ان تكون من نوع صورة',
+            'photo.mimes' => 'الصورة يحب ان تكون ضمن ال jpg png jpeg',
+            'description.string' => 'وصف المنتج يجب ان يكون نص',
+            'note.string' => 'الملاحظة يجب ان تكون نص',
+            'discount.integer' => 'التخفيض يجب ان يكون رقمي',
+            'discount.max' => 'التخفيض تجاوز الحد المسموح 100',
+            'discount.min' => 'التخفيض اقل من الحد المسموح 0',
+            'offerText.string' => 'العرض يجب ان يكون نص',
+            'offerText.max' => 'العرض تجاوز الحد المسموح للكتابة',
+            'inventory.integer' => 'المخزون يجب ان يكون رقمي',
+            'status.boolean' => 'الحالة المرئية للمنتج يجب ان كون رقمية 0 أو 1',
+        ];
     }
 }
