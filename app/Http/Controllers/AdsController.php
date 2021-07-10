@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseMessage as Resp;
+use App\Models\Ad;
 use Illuminate\Http\Request;
 
 class AdsController extends Controller
@@ -26,5 +27,12 @@ class AdsController extends Controller
 
         $all = \App\Models\Ad::with('category', 'product')->where('status', 1)->limit($validate->limit)->groupBy($validate->groupBy)->get();
         return Resp::Success('تم', $all);
+    }
+
+    public function randomAd()
+    {
+        $data = Ad::inRandomOrder()->where('status', 1)->limit(1)->get();
+
+        return Resp::Success('ok', $data);
     }
 }

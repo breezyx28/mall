@@ -132,6 +132,7 @@ Route::group(['prefix' => GUEST], function () {
     Route::apiResource('ads', AdsControllerResource::class)->only('index');
     Route::get('adsOptions', [AdsController::class, 'AdsOptions']);
     Route::get('adsGroupBy', [AdsController::class, 'AdsGroupBy']);
+    Route::get('randomAd', [AdsController::class, 'randomAd']);
 });
 
 Route::group(['middleware' => 'auth.jwt'], function () {
