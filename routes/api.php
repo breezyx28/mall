@@ -103,7 +103,9 @@ Route::group(['prefix' => GUEST], function () {
     Route::ApiResource('products', ProductControllerResource::class)->only('index', 'show');
     Route::get('top', [ProductController::class, 'topProduct']);
     Route::get('todayProducts', [ProductController::class, 'todayProducts']);
+    Route::get('adProducts', [ProductController::class, 'adProducts']);
     Route::get('productsWith', [ProductController::class, 'productsWith']);
+    Route::get('androidProductsWith', [ProductController::class, 'AndroidProductsWith']);
     Route::post('getProducts', [ProductController::class, 'getProducts']);
     Route::get('randomProducts', [ProductController::class, 'randomProducts']);
 

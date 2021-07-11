@@ -69,6 +69,13 @@ class ProductController extends Controller
         }
     }
 
+    public function adProducts()
+    {
+        $now = Carbon::now();
+        $data = \App\Models\Ad::with('category', 'product')->where('status', 1)->where('expireDate', '>', $now->toDateString())->limit(10)->orderBy('updated_at', 'desc')->get();
+        return Resp::Success('تم', $data);
+    }
+
     public function getProducts(Request $request)
     {
         $validate = (object) $request->validate([
@@ -139,6 +146,67 @@ class ProductController extends Controller
                 //code...
                 $all = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->get();
                 return Resp::Success('تم', Details::details($all));
+            } catch (\Throwable $th) {
+                //throw $th;
+                return Resp::Error('حدث خطأ ما', $th->getMessage());
+            }
+        }
+    }
+
+    public function AndroidProductsWith(Request $request)
+    {
+        $validate = (object) $request->validate([
+            'category' => 'string',
+            'subCategory' => 'string',
+            'department' => 'string'
+        ]);
+
+        if (isset($validate->category) && !isset($validate->subCategory)) {
+            $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
+                $query->where('name', $validate->category);
+            })->with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->get();
+
+            return Resp::Success('تم', [Details::details($filtered)]);
+        }
+
+        if (isset($validate->subCategory) && !isset($validate->category)) {
+            $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
+                $query->where('subCategory', '=', $validate->subCategory);
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
+
+            return Resp::Success('تم', [Details::details($filtered)]);
+        }
+
+        if (isset($validate->department) && !isset($validate->category) && !isset($validate->subCategory)) {
+            $filtered = \App\Models\Product::whereHas('category', function ($query) use ($validate) {
+                $query->where('department', $validate->department);
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
+
+            return Resp::Success('تم', [Details::details($filtered)]);
+        }
+
+        if (isset($validate->subCategory) && isset($validate->category)) {
+
+            try {
+                //code...
+                $all = \App\Models\Product::whereHas('category', function ($q) use ($validate) {
+                    $q->where(['name' => $validate->category, 'subCategory' => $validate->subCategory]);
+                })->where('status', 1)
+                    ->get();
+                $all->load('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes');
+                return Resp::Success('تم', [Details::details($all)]);
+            } catch (\Throwable $th) {
+                //throw $th;
+                return Resp::Error('حدث خطأ ما', $th->getMessage());
+            }
+        }
+
+        if (!isset($validate->subCategory) && !isset($validate->category) && !isset($validate->department)) {
+
+            try {
+                //code...
+                $all = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->get();
+                return Resp::Success('تم', [Details::details($all)]);
             } catch (\Throwable $th) {
                 //throw $th;
                 return Resp::Error('حدث خطأ ما', $th->getMessage());
