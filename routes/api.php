@@ -209,7 +209,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('statistics', [StatisticsController::class, 'statistics']);
 
         // users
-        Route::apiResource('users', UserControllerResource::class);
+        Route::apiResource('users', UserControllerResource::class)->except('update');
+        Route::post('user/{user}', [UserControllerResource::class, 'update']);
 
         // stores
         Route::ApiResource('stores', StoreControllerResource::class)->except('update');
@@ -259,7 +260,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::post('givePermission', [RoleController::class, 'givePermission']);
 
         // ads
-        Route::apiResource('ads', AdsControllerResource::class);
+        Route::apiResource('ads', AdsControllerResource::class)->except('update');
+        Route::post('ad/{ad}', [AdsControllerResource::class, 'update']);
 
         // Notifications
         Route::apiResource('notifications', NotificationControllerResource::class)->except('index');
