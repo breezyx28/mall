@@ -55,6 +55,7 @@ class User extends Authenticatable implements JWTSubject
         // $base_url = str_replace('localhost', env('DB_HOST'), env('APP_URL'));
 
         // return $base_url . ':' . $_SERVER['SERVER_PORT'] . "/storage/" . $value;
-        return 'https://laravelstorage1.sgp1.digitaloceanspaces.com/' . $value;
+        // return 'https://laravelstorage1.sgp1.digitaloceanspaces.com/' . $value;
+        return config('const.immages_space_path') . $value;
     }
 }

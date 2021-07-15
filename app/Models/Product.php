@@ -46,6 +46,11 @@ class Product extends Model
         return $this->hasMany(Favourit::class, 'product_id', 'id');
     }
 
+    public function ads()
+    {
+        return $this->hasMany(Ad::class, 'product_id', 'id');
+    }
+
     public function getPhotoAttribute($value)
     {
         // replace http://localhost to by htpp://127.0.0.1
@@ -53,7 +58,7 @@ class Product extends Model
 
         // return $base_url . ':' . $_SERVER['SERVER_PORT'] . "/storage/" . $value;
 
-        return 'https://laravelstorage1.sgp1.digitaloceanspaces.com/' . $value;
+        return config('const.immages_space_path') . $value;
     }
 
     public function getFinalPriceAttribute()

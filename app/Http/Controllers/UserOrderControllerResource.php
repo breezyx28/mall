@@ -65,7 +65,7 @@ class UserOrderControllerResource extends Controller
 
             $validate['orders'][$key]['orders_number_id'] = $ordersNumber->id;
             $validate['orders'][$key]['status'] = 'available';
-            $validate['orders'][$key]['order_props'] = json_encode([$value['order_props']]);
+            $validate['orders'][$key]['order_props'] = json_encode([$value['order_props']]) ?? null;
             $validate['orders'][$key]['user_id'] = $user->id;
             $validate['orders'][$key]['order_address'] = $value['order_address'] ?? null;
             $validate['orders'][$key]['created_at'] = Carbon::now();

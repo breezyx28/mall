@@ -28,18 +28,18 @@ class updateUsersRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstName' => 'string|max:191',
-            'userName' => 'unique:users|string|max:191',
-            'middleName' => 'string|max:191',
-            'LastName' => 'string|max:191',
-            'thumbnail' => 'image|mimes:jpg,jpeg,png',
-            'phone' => 'unique:users,phone|digits:10',
-            'email' => 'string|unique:users|regex:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/',
-            'address' => 'string|max:191',
-            'birthDate' => ['date', new dateFormatRule()],
-            'state_id' => 'exists:states,id|integer',
-            'gender' =>  Rule::in(['ذكر', 'انثى']),
-            'activity' =>  'boolean',
+            'firstName' => 'nullable|string|max:191',
+            'userName' => 'nullable|unique:users|string|max:191',
+            'middleName' => 'nullable|string|max:191',
+            'LastName' => 'nullable|string|max:191',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png',
+            'phone' => 'nullable|unique:users,phone|digits:10',
+            'email' => 'nullable|string|unique:users|regex:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/',
+            'address' => 'nullable|string|max:191',
+            'birthDate' => ['nullable', 'date', new dateFormatRule()],
+            'state_id' => 'nullable|exists:states,id|integer',
+            'gender' =>  ['nullable', Rule::in(['ذكر', 'انثى'])],
+            'activity' =>  'nullable|boolean',
         ];
     }
 

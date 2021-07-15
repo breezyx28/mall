@@ -97,7 +97,10 @@ class ProductController extends Controller
         $validate = (object) $request->validate([
             'category' => 'string',
             'subCategory' => 'string',
-            'department' => 'string'
+            'department' => 'string',
+            'todayOffers' => 'string',
+            'topDiscounts' => 'string',
+            'mostRated' => 'string',
         ]);
 
         if (isset($validate->category) && !isset($validate->subCategory)) {
@@ -138,6 +141,32 @@ class ProductController extends Controller
                 //throw $th;
                 return Resp::Error('حدث خطأ ما', $th->getMessage());
             }
+        }
+
+        // todayOffers
+        if (isset($validate->todayOffers)) {
+            $now = Carbon::now();
+            $filtered = \App\Models\Product::whereHas('ads', function ($query) use ($now) {
+                $query->where('status', 1)->where('expireDate', '>', $now->toDateString())->orderBy('updated_at', 'desc');
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
+
+            return Resp::Success('تم', Details::details($filtered));
+        }
+
+        // topDiscounts
+        if (isset($validate->topDiscounts)) {
+            $filtered = \App\Models\Product::with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->where('discount', '>', 0)->orderBy('discount', 'desc')->get();
+
+            return Resp::Success('تم', Details::details($filtered));
+        }
+
+        // mostRated
+        if (isset($validate->mostRated)) {
+            $filtered = \App\Models\Product::whereHas('rate', function ($q) {
+                $q->where('rate', '>', 0);
+            })->with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->get();
+
+            return Resp::Success('تم', Details::details($filtered));
         }
 
         if (!isset($validate->subCategory) && !isset($validate->category) && !isset($validate->department)) {

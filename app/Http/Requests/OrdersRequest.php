@@ -37,7 +37,7 @@ class OrdersRequest extends FormRequest
             'orders.*.state_id' => 'nullable|integer|exists:states,id',
             'orders.*.order_address' => 'max:191',
             'orders.*.product_id' => 'required|integer|exists:products,id',
-            'orders.*.order_props' => 'array',
+            'orders.*.order_props' => 'nullable|array',
             'orders.*.order_props.*.color' => 'string',
             'orders.*.order_props.*.size' => 'string',
             'orders.*.order_props.*.id' => 'integer',

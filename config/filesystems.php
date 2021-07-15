@@ -51,7 +51,6 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
-
         'spaces' => [
             'driver' => 's3',
             'key' => env('DO_SPACES_KEY'),

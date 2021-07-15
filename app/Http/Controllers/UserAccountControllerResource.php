@@ -7,10 +7,24 @@ use Illuminate\Http\Request;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\AccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use Error;
 use Illuminate\Support\Facades\Hash;
 
 class UserAccountControllerResource extends Controller
 {
+    public function CheckAccount($cardNumber)
+    {
+        $user_id = auth()->user()->id;
+
+        $account_number_exists = Account::where('cardNumber', $cardNumber)->where('user_id', '!=', $user_id)->first();
+
+        // if card number exists on another account throw error
+        if ($account_number_exists !== null) {
+            throw new Error('الرقم موجود مسبقا ... إستخدم رقم أخر');
+        }
+
+        return true;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +56,7 @@ class UserAccountControllerResource extends Controller
 
         try {
             $acc->save();
-            return Resp::Success('تم إنشاء حساب مستخدم بنجاح', $acc);
+            return Resp::Success('تم إنشاء البطاقة بنجاح', $acc);
         } catch (\Exception $e) {
             return Resp::Error('حدث خطأ ما', $e);
         }
@@ -79,6 +93,12 @@ class UserAccountControllerResource extends Controller
             return Resp::Error('كلمة السر غير صحيحة');
         }
 
+        try {
+            $this->CheckAccount($validate->password);
+        } catch (\Throwable $th) {
+            return Resp::Error($th->getMessage());
+        }
+
         foreach ($validate as $key => $value) {
             if (isset($validate->password)) {
                 unset($validate->password);
@@ -102,10 +122,9 @@ class UserAccountControllerResource extends Controller
      */
     public function destroy(Account $account)
     {
-        if ($account->user->contain(auth()->user()->id)) {
-            $account->delete();
-            return Resp::Success('تم الحذف', $account);
-        }
-        return Resp::Error('انت لا تملك هذا الحساب');
+        $id = auth()->user()->id;
+        $account->where(['id' => $account->id, 'user_id' => $id])->delete();
+        // $account->delete();
+        return Resp::Success('تم الحذف', $account);
     }
 }

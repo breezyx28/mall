@@ -67,6 +67,12 @@ class LoginController extends Controller
 
         $user = \App\Models\User::find($auth->id);
 
+        $validate = array_filter((array) $validate, function ($value) {
+            return $value != '' || $value != null;
+        });
+
+        $validate = (object) $validate;
+
         foreach ($validate as $key => $value) {
 
             if ($validate->$key == 'birthDate') {
@@ -74,13 +80,12 @@ class LoginController extends Controller
                 $user->birthDate = date('Y-m-d', strtotime($validate->birthDate));
             }
 
+            if (isset($request['thumbnail'])) {
+                $user->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
+            }
             $user->$key = $value;
         }
 
-        if (isset($request['thumbnail'])) {
-            // $user->thumbnail = null;
-            $user->thumbnail = Str::of($request->file('thumbnail')->storePublicly('Profile'));
-        }
 
         try {
             $user->save();
@@ -89,7 +94,7 @@ class LoginController extends Controller
                 event(new NotificationEvent($user->id, 'deactivate'));
             }
 
-            return Resp::Success('تم تحديث البيانات بنجاح', $user);
+            return Resp::Success('تم تحديث بياناتك بنجاح', $user);
         } catch (\Exception $e) {
             return Resp::Error('حدث خطأ ما', $e);
         }

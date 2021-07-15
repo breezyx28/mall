@@ -28,7 +28,7 @@ class AccountRequest extends FormRequest
     {
         return [
             'cardName' => 'required|string|max:100',
-            'cardNumber' => 'required|unique:accounts,cardNumber|numeric|digits_between:16,19',
+            'cardNumber' => 'required|unique:accounts,cardNumber|numeric|digits_between:16,20',
             'expireDate' => ['required', 'date', new dateFormatRule()]
         ];
     }
@@ -41,5 +41,19 @@ class AccountRequest extends FormRequest
             $messages[] = $message;
         }
         throw new HttpResponseException(response()->json(['success' => false, 'errors' => $messages], 200));
+    }
+
+    public function messages()
+    {
+        return [
+            'cardName.required' => 'إسم البطاقة مطلوب',
+            'cardName.string' => 'إسم البطاقة يجب ان يكون نص',
+            'cardName.max' => 'إسم البطاقة تجواز الحد الأقصى',
+            'cardNumber.required' => 'رقم البطاقة مطلوب',
+            'cardNumber.integer' => 'رقم البطاقة يجب ان يكون رقمي',
+            'cardNumber.digits_between' => ' رقم البطاقة أقل من 16 رقم أو أكبر من 20 رقم',
+            'expireDate.required' => 'تاريخ الصلاحية البطاقة مطلوب',
+            'expireDate.date' => 'تاريخ الصلاحية غير صحيح',
+        ];
     }
 }
