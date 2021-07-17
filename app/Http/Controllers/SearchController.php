@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Helper\ProducsDetails as Details;
 
 class SearchController extends Controller
 {
@@ -98,5 +99,19 @@ class SearchController extends Controller
             'productsPropertyList' => $productsPropertyList,
             'result' => $result->values()->all()
         ]);
+    }
+
+    public function webSearch(SearchRequest $request)
+    {
+        $validate = (object) $request->validated();
+
+        $result = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->search($validate->search)->limit(50)->get();
+
+        // if there is a result
+        if ($result->isEmpty()) {
+            return Resp::Error('لا توجد نائج', $result);
+        }
+
+        return Resp::Success('تم', Details::details($result));
     }
 }

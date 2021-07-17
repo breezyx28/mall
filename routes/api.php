@@ -98,6 +98,7 @@ Route::group(['prefix' => GUEST], function () {
 
     // search product with filter
     Route::post('search', [SearchController::class, 'search']);
+    Route::post('webSearch', [SearchController::class, 'webSearch']);
 
     // products
     Route::ApiResource('products', ProductControllerResource::class)->only('index', 'show');
