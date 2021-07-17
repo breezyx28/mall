@@ -105,7 +105,7 @@ class SearchController extends Controller
     {
         $validate = (object) $request->validated();
 
-        $result = \App\Models\Product::with('category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes')->where('status', 1)->search($validate->search)->limit(50)->get();
+        $result = \App\Models\Product::with(['category', 'store.store', 'rate', 'product_photos', 'additional_description', 'product_sizes'])->where('status', 1)->search($validate->search)->limit(50)->get();
 
         // if there is a result
         if ($result->isEmpty()) {
