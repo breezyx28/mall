@@ -17,10 +17,14 @@ class OrdersRequest extends FormRequest
      */
     public function authorize()
     {
-        if (auth()->user()->role_id == 3) {
-            return true;
-        }
-        return false;
+        // only user can order
+        // if (auth()->user()->role_id == 3 || auth()->user()->role_id == 3) {
+        //     return true;
+        // }
+        // return false;
+
+        // every one can order
+        return true;
     }
 
     /**
