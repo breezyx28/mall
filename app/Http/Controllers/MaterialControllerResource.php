@@ -17,7 +17,7 @@ class MaterialControllerResource extends Controller
      */
     public function index()
     {
-        $all = Material::with('category')->get();
+        $all = Material::all();
         return Resp::Success('تم', $all);
     }
 
@@ -53,8 +53,8 @@ class MaterialControllerResource extends Controller
      */
     public function show(Material $Material)
     {
-        $mat = $Material->load('category');
-        return Resp::Success('تم', $mat);
+        // $mat = $Material->load('category');
+        return Resp::Success('تم', $Material);
     }
 
     /**

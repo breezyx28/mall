@@ -26,8 +26,8 @@ class MaterialsRequest extends FormRequest
     public function rules()
     {
         return [
-            'materialName' => 'required|string|max:191',
-            'category_id' => 'required|exists:categories,id'
+            'materialName' => 'required|unique:materials|string|max:191',
+            // 'category_id' => 'required|exists:categories,id'
         ];
     }
 
@@ -47,8 +47,6 @@ class MaterialsRequest extends FormRequest
             'materialName.required' => 'حقل اسم الخامة مطلوب',
             'materialName.string' => 'حقل اسم الخامة يجب ان يكون من النوع نص',
             'materialName.max' => 'حقل الخامة تعدى الطول المسموح',
-            'category_id.required' => 'حقل رقم الصنف المرجع مطلوب',
-            'category_id.exists' => 'حقل رقم الصنف المرجعي غير موجود  في السجلات',
         ];
     }
 }
