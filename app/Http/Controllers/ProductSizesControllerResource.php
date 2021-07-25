@@ -10,6 +10,17 @@ use Illuminate\Http\Request;
 
 class ProductSizesControllerResource extends Controller
 {
+    private function checkProduct($product_id)
+    {
+        $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
+        $products_ids = \App\Models\StoreProduct::where('store_id', $get_store_id)->get()->pluck('id');
+
+        if (in_array($product_id, $products_ids)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +28,11 @@ class ProductSizesControllerResource extends Controller
      */
     public function index()
     {
-        $all = ProductSizes::with('product')->get();
+        $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
+
+        $all = ProductSizes::with(['product', function ($q, $get_store_id) {
+            $q->where('store_id', $get_store_id);
+        }])->get();
         return Resp::Success('تم', $all);
     }
 
@@ -33,6 +48,10 @@ class ProductSizesControllerResource extends Controller
         $validate = (object) $request->validated();
 
         $prodSizes = new \App\Models\ProductSizes();
+
+        if ($this->checkProduct($validate->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
 
         foreach ($validate as $key => $value) {
             $prodSizes->$key = $value;
@@ -54,6 +73,10 @@ class ProductSizesControllerResource extends Controller
      */
     public function show(ProductSizes $productSize)
     {
+        if ($this->checkProduct($productSize->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
+
         $productSize->load('product');
         return Resp::Success('تم', $productSize);
     }
@@ -69,8 +92,13 @@ class ProductSizesControllerResource extends Controller
     {
         $validate = (object) $request->validated();
 
+        if ($this->checkProduct($validate->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
+
         foreach ($validate as $key => $value) {
-            $productSize->$key = $value;
+            if ($validate->product_id)
+                $productSize->$key = $value;
         }
 
         try {
@@ -89,6 +117,10 @@ class ProductSizesControllerResource extends Controller
      */
     public function destroy(ProductSizes $productSize)
     {
+        if ($this->checkProduct($productSize->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
+
         $productSize->delete();
         return Resp::Success('تم الحذف', $productSize);
     }

@@ -20,18 +20,4 @@ class ProductSizes extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
-    // public function getSizesArrayAttribute()
-    // {
-    //     $sizes = $this->attributes['sizes_array'];
-
-    //     if (!$sizes) {
-    //         return null;
-    //     }
-
-    //     // convert sizes_array into actual array
-    //     $actualArray = ValidateArray::parse($sizes);
-
-    //     return Size::find($actualArray);
-    // }
 }

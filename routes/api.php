@@ -202,6 +202,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         // order by order id
         Route::get('storeOrders', [OrderController::class, 'storeOrders']);
         Route::get('allStoreOrders', [OrderController::class, 'allStoreOrders']);
+
+        // products sizes
+        Route::ApiResource('productSizes', ProductSizesControllerResource::class);
+        Route::get('productSize/{id}', [ProductSizesController::class, 'sizesByProductID']);
     });
 
     Route::group(['prefix' => ADMIN, 'middleware' => 'adminWare'], function () {
@@ -228,9 +232,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::ApiResource('productsPhotos', ProductsPhotoControllerResource::class)->except('update');
         Route::post('productPhoto/{ProductsPhoto}', [ProductsPhotoControllerResource::class, 'update']);
 
-        // products sizes
-        Route::ApiResource('productSizes', ProductSizesControllerResource::class);
-        Route::get('productSize/{id}', [ProductSizesController::class, 'sizesByProductID']);
+        // // products sizes
+        // Route::ApiResource('productSizes', ProductSizesControllerResource::class);
+        // Route::get('productSize/{id}', [ProductSizesController::class, 'sizesByProductID']);
 
         // accounts
         Route::resource('accounts', AccountsControllerResource::class);
