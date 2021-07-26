@@ -31,6 +31,7 @@ class UpdateProductAdmin extends FormRequest
             'photo' => 'image|mimes:jpg,jpeg,png',
             'description' => 'string',
             'discount' => 'integer',
+            'bar_code' => 'string|max:191',
             'addetionalPrice' => 'string',
             'offerText' => 'string|max:191',
             'inventory' => 'integer',

@@ -28,12 +28,13 @@ class AdditionalDescriptionsRequest extends FormRequest
     {
         return [
             'color' => 'array',
-            'color.*' => [new ColorRule()],
+            'color.*' => 'string|max:190',
+            // 'color.*' => [new ColorRule()],
             // 'color.*' => 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',
             'weight' => 'string|max:100',
             'for' => 'string|max:191',
             'company' => 'string|max:191',
-            'expireDate' => 'date',
+            // 'expireDate' => 'date',
             'product_id' => 'required|integer|unique:additional_descriptions|exists:products,id',
             'countryOfMade' => 'string|max:191'
         ];
@@ -53,7 +54,8 @@ class AdditionalDescriptionsRequest extends FormRequest
     {
         return [
             'color' => 'حقل اللون يجب ان يكون من النوع مصفوفة',
-            'color.*.regex' => 'الألوان يجب ان تكون مطابقة لمعايير الألوان ال rgb, hex, hsl',
+            'color.*.text' => 'اللون يجب ان يكون عبارة عن نص',
+            // 'color.*.regex' => 'الألوان يجب ان تكون مطابقة لمعايير الألوان ال rgb, hex, hsl',
             'color.*.max' => 'أحد الألوان تجاوز الحد المسموح للطول',
             'weight.string' => 'حقل الوزن يجب ان يكون من النوع نص',
             'weight.max' => 'حقل الوزن تجاوز الحد المسموح للطول',

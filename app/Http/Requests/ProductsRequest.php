@@ -36,6 +36,7 @@ class ProductsRequest extends FormRequest
             'description' => 'string',
             'note' => 'string',
             'discount' => 'integer|max:100|min:0',
+            'bar_code' => 'string|max:191',
             // 'addetionalPrice' => 'string',        يفترض تكون الإضافة من قبل الأدمن
             'category_id' => 'required|integer|exists:categories,id',
             'store_id' => 'required|integer|exists:stores,id',
@@ -70,6 +71,8 @@ class ProductsRequest extends FormRequest
             'discount.integer' => 'التخفيض يجب ان يكون رقمي',
             'discount.max' => 'التخفيض تجاوز الحد المسموح 100',
             'discount.min' => 'التخفيض اقل من الحد المسموح 0',
+            'bar_code.string' => 'الباركود يجب ان تكون نص',
+            'bar_code.max' => 'الباركود تجاوز الحد المسموح 100',
             'category_id.required' => 'الصنف مطلوب',
             'category_id.exists' => 'الصنف غير حقيقي مطلوب',
             'store_id.required' => 'المتجر مطلوب',

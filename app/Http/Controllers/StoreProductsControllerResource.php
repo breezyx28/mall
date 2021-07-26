@@ -17,19 +17,19 @@ use Illuminate\Support\Str;
 class StoreProductsControllerResource extends Controller
 {
     private $storeID;
+    // bar code generator
+    // function generateBarcodeNumber()
+    // {
+    //     $number = mt_rand(1000000000, mt_getrandmax()); // better than rand()
 
-    function generateBarcodeNumber()
-    {
-        $number = mt_rand(1000000000, mt_getrandmax()); // better than rand()
+    //     // call the same function if the barcode exists already
+    //     if ($this->barcodeNumberExists($number)) {
+    //         return $this->generateBarcodeNumber();
+    //     }
 
-        // call the same function if the barcode exists already
-        if ($this->barcodeNumberExists($number)) {
-            return $this->generateBarcodeNumber();
-        }
-
-        // otherwise, it's valid and can be used
-        return $number;
-    }
+    //     // otherwise, it's valid and can be used
+    //     return $number;
+    // }
 
     function barcodeNumberExists($number)
     {
@@ -72,7 +72,7 @@ class StoreProductsControllerResource extends Controller
         }
 
         // generating a unique barcode number
-        $product->bar_code = $this->generateBarcodeNumber();
+        // $product->bar_code = $this->generateBarcodeNumber();
 
         $product->photo = Str::of($request->file('photo')->storePublicly('Product'));
 
