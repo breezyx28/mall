@@ -27,7 +27,7 @@ class MaterialsRequest extends FormRequest
     {
         return [
             'materialName' => 'required|unique:materials|string|max:191',
-            // 'category_id' => 'required|exists:categories,id'
+            'product_id' => 'required|exists:products,id'
         ];
     }
 

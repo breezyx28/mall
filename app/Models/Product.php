@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $appends = ['final_price'];
-    protected $with = ['rate'];
+    protected $with = ['rate', 'material'];
 
     public function category()
     {
@@ -36,9 +36,15 @@ class Product extends Model
     {
         return $this->hasMany(ProductsPhoto::class, 'product_id', 'id');
     }
+
     public function product_sizes()
     {
         return $this->hasMany(ProductSizes::class, 'product_id', 'id');
+    }
+
+    public function material()
+    {
+        return $this->hasOne(Material::class, 'product_id', 'id');
     }
 
     public function favourit()

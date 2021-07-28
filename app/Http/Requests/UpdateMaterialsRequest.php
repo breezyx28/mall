@@ -26,7 +26,8 @@ class UpdateMaterialsRequest extends FormRequest
     public function rules()
     {
         return [
-            'materialName' => 'required|string|max:191'
+            'materialName' => 'required|string|max:191',
+            'product_id' => 'required|exists:products,id'
         ];
     }
 
