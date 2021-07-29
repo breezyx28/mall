@@ -30,7 +30,7 @@ class ProductSizesControllerResource extends Controller
     {
         $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
 
-        $all = ProductSizes::with(['product', function ($q, $get_store_id) {
+        $all = ProductSizes::with(['product', function ($q) use ($get_store_id) {
             $q->where('store_id', $get_store_id);
         }])->get();
         return Resp::Success('تم', $all);

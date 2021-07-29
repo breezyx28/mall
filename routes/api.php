@@ -14,6 +14,7 @@ use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MaterialControllerResource;
 use App\Http\Controllers\MaterialsController;
+use App\Http\Controllers\MaterialsListController;
 use App\Http\Controllers\NotificationContoller;
 use App\Http\Controllers\NotificationControllerResource;
 use App\Http\Controllers\OrderController;
@@ -127,9 +128,8 @@ Route::group(['prefix' => GUEST], function () {
     Route::apiResource('sizes', SizesControllerResource::class)->only('index');
     Route::get('getSizesBy', [SizesController::class, 'getSizesBy']);
 
-    // materials
-    Route::apiResource('materials', MaterialControllerResource::class)->only('index');
-    Route::get('getMaterialsBy', [MaterialsController::class, 'getMaterialsBy']);
+    // materials list
+    Route::apiResource('materialsList', MaterialsListController::class)->only('index');
 
     // ads
     Route::apiResource('ads', AdsControllerResource::class)->only('index');
@@ -206,6 +206,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         // products sizes
         Route::ApiResource('productSizes', ProductSizesControllerResource::class);
         Route::get('productSize/{id}', [ProductSizesController::class, 'sizesByProductID']);
+
+        // materials
+        Route::apiResource('materials', MaterialControllerResource::class);
+        // Route::get('getMaterialsBy', [MaterialsController::class, 'getMaterialsBy']);
     });
 
     Route::group(['prefix' => ADMIN, 'middleware' => 'adminWare'], function () {
@@ -257,8 +261,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         // sizes
         Route::apiResource('sizes', SizesControllerResource::class);
 
-        // materials
-        Route::apiResource('materials', MaterialControllerResource::class);
+        // // materials
+        // Route::apiResource('materials', MaterialControllerResource::class);
+        // materials list
+        Route::apiResource('materialsList', MaterialsListController::class);
 
         // roles
         Route::apiResource('roles', RoleControllerResource::class);

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class MaterialsRequest extends FormRequest
+class UpdateMaterialsListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,7 @@ class MaterialsRequest extends FormRequest
     public function rules()
     {
         return [
-            'materialName' => 'required|exists:materials_list,name|string|max:191',
-            'product_id' => 'required|exists:products,id'
+            'name' => 'required|unique:materials_list|string|max:191',
         ];
     }
 
@@ -44,9 +43,10 @@ class MaterialsRequest extends FormRequest
     public function messages()
     {
         return [
-            'materialName.required' => 'حقل اسم الخامة مطلوب',
-            'materialName.string' => 'حقل اسم الخامة يجب ان يكون من النوع نص',
-            'materialName.max' => 'حقل الخامة تعدى الطول المسموح',
+            'name.required' => 'حقل اسم الخامة مطلوب',
+            'name.string' => 'حقل اسم الخامة يجب ان يكون من النوع نص',
+            'name.max' => 'حقل الخامة تعدى الطول المسموح',
+            'name.unique' => 'حقل الخامة موجود',
         ];
     }
 }

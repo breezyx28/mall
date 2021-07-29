@@ -10,6 +10,17 @@ use Illuminate\Http\Request;
 
 class MaterialControllerResource extends Controller
 {
+    private function checkProduct($product_id)
+    {
+        $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
+        $products_ids = \App\Models\StoreProduct::where('store_id', $get_store_id)->get()->pluck('id');
+
+        if (in_array($product_id, $products_ids)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +28,11 @@ class MaterialControllerResource extends Controller
      */
     public function index()
     {
-        $all = Material::all();
+        $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
+
+        $all = Material::whereHas('product', function ($q) use ($get_store_id) {
+            $q->where('store_id', $get_store_id);
+        })->get();
         return Resp::Success('تم', $all);
     }
 
@@ -32,6 +47,10 @@ class MaterialControllerResource extends Controller
         $material = new Material();
 
         $validate = (object) $request->validated();
+
+        if ($this->checkProduct($validate->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
 
         foreach ($validate as $key => $value) {
             $material->$key = $value;
@@ -53,8 +72,12 @@ class MaterialControllerResource extends Controller
      */
     public function show(Material $Material)
     {
-        // $mat = $Material->load('category');
-        return Resp::Success('تم', $Material);
+        if ($this->checkProduct($Material->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
+
+        $mat = $Material->load('product');
+        return Resp::Success('تم', $mat);
     }
 
     /**
@@ -67,6 +90,10 @@ class MaterialControllerResource extends Controller
     public function update(UpdateMaterialsRequest $request, Material $Material)
     {
         $validate = (object) $request->validated();
+
+        if ($this->checkProduct($validate->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
 
         $Material->materialName = $validate->materialName;
 
@@ -86,6 +113,10 @@ class MaterialControllerResource extends Controller
      */
     public function destroy(Material $Material)
     {
+        if ($this->checkProduct($Material->product_id)) {
+            return Resp::Error('انت لا تملك هذا المنتج');
+        }
+
         $Material->delete();
         return Resp::Success('تم الحذف', $Material);
     }
