@@ -44,8 +44,9 @@ class UpdateMaterialsRequest extends FormRequest
     public function messages()
     {
         return [
-            'materialName.required' => 'حقل اسم الخامة مطلوب',
             'materialName.string' => 'حقل اسم الخامة يجب ان يكون من النوع نص',
+            'materialName.exists' => 'حقل اسم الخامة غير متوفر في قائمة الخامات ',
+            'product_id.exists' => 'المنتج غير موجود',
         ];
     }
 }

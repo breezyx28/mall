@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MaterialsList;
 use App\Http\Controllers\Controller;
 use App\Helper\ResponseMessage as Resp;
+use App\Http\Requests\MaterialsListRequest;
 use App\Http\Requests\MaterialsRequest;
 use App\Http\Requests\UpdateMaterialsListRequest;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class MaterialsListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MaterialsRequest $request)
+    public function store(MaterialsListRequest $request)
     {
         $material = new MaterialsList();
 
@@ -68,7 +69,7 @@ class MaterialsListController extends Controller
     {
         $validate = (object) $request->validated();
 
-        $materialsList->name = $validate->materialName;
+        $materialsList->name = $validate->name;
 
         try {
             $materialsList->save();

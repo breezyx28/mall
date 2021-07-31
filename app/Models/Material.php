@@ -9,8 +9,6 @@ class Material extends Model
 {
     use HasFactory;
 
-    protected $with = ['product'];
-
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -45,8 +45,11 @@ class MaterialsRequest extends FormRequest
     {
         return [
             'materialName.required' => 'حقل اسم الخامة مطلوب',
+            'materialName.exists' => 'حقل اسم الخامة غير موجود في قائمة الخامات "materilasList"',
             'materialName.string' => 'حقل اسم الخامة يجب ان يكون من النوع نص',
             'materialName.max' => 'حقل الخامة تعدى الطول المسموح',
+            'product_id.required' => 'حقل المنتج مطلوب',
+            'product_id.exists' => 'المنتج غير موجود',
         ];
     }
 }

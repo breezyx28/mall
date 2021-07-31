@@ -129,7 +129,7 @@ Route::group(['prefix' => GUEST], function () {
     Route::get('getSizesBy', [SizesController::class, 'getSizesBy']);
 
     // materials list
-    Route::apiResource('materialsList', MaterialsListController::class)->only('index');
+    Route::apiResource('materialsLists', MaterialsListController::class)->only('index');
 
     // ads
     Route::apiResource('ads', AdsControllerResource::class)->only('index');

@@ -13,14 +13,15 @@ class MaterialControllerResource extends Controller
     private function checkProduct($product_id)
     {
         $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
-        $products_ids = \App\Models\StoreProduct::where('store_id', $get_store_id)->get()->pluck('id');
+        $products_ids = \App\Models\StoreProduct::where('store_id', $get_store_id)->get()->pluck('product_id')->values();
 
-        if (in_array($product_id, $products_ids)) {
+        if (in_array($product_id, (array) $products_ids)) {
             return true;
         } else {
             return false;
         }
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,6 +34,7 @@ class MaterialControllerResource extends Controller
         $all = Material::whereHas('product', function ($q) use ($get_store_id) {
             $q->where('store_id', $get_store_id);
         })->get();
+
         return Resp::Success('تم', $all);
     }
 
@@ -72,10 +74,6 @@ class MaterialControllerResource extends Controller
      */
     public function show(Material $Material)
     {
-        if ($this->checkProduct($Material->product_id)) {
-            return Resp::Error('انت لا تملك هذا المنتج');
-        }
-
         $mat = $Material->load('product');
         return Resp::Success('تم', $mat);
     }
@@ -91,11 +89,15 @@ class MaterialControllerResource extends Controller
     {
         $validate = (object) $request->validated();
 
-        if ($this->checkProduct($validate->product_id)) {
-            return Resp::Error('انت لا تملك هذا المنتج');
+        if (isset($validate->product_id)) {
+            if ($this->checkProduct($validate->product_id)) {
+                return Resp::Error('انت لا تملك هذا المنتج');
+            }
         }
 
-        $Material->materialName = $validate->materialName;
+        foreach ($validate as $key => $value) {
+            $Material->$key = $value;
+        }
 
         try {
             $Material->save();
@@ -113,10 +115,6 @@ class MaterialControllerResource extends Controller
      */
     public function destroy(Material $Material)
     {
-        if ($this->checkProduct($Material->product_id)) {
-            return Resp::Error('انت لا تملك هذا المنتج');
-        }
-
         $Material->delete();
         return Resp::Success('تم الحذف', $Material);
     }
