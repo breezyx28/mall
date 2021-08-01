@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 
 class ProductSizesControllerResource extends Controller
 {
-    private function checkProduct($product_id)
+    public function checkProduct($product_id)
     {
         $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
         $products_ids = \App\Models\StoreProduct::where('store_id', $get_store_id)->get()->pluck('id');
 
-        if (in_array($product_id, $products_ids)) {
+        if (in_array($product_id, (array) $products_ids)) {
             return true;
         } else {
             return false;
@@ -30,9 +30,9 @@ class ProductSizesControllerResource extends Controller
     {
         $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
 
-        $all = ProductSizes::with(['product', function ($q) use ($get_store_id) {
+        $all = ProductSizes::whereHas('product', function ($q) use ($get_store_id) {
             $q->where('store_id', $get_store_id);
-        }])->get();
+        })->get();
         return Resp::Success('تم', $all);
     }
 
@@ -92,13 +92,14 @@ class ProductSizesControllerResource extends Controller
     {
         $validate = (object) $request->validated();
 
-        if ($this->checkProduct($validate->product_id)) {
-            return Resp::Error('انت لا تملك هذا المنتج');
+        if (isset($validate->product_id)) {
+            if ($this->checkProduct($validate->product_id)) {
+                return Resp::Error('انت لا تملك هذا المنتج');
+            }
         }
 
         foreach ($validate as $key => $value) {
-            if ($validate->product_id)
-                $productSize->$key = $value;
+            $productSize->$key = $value;
         }
 
         try {
@@ -117,10 +118,6 @@ class ProductSizesControllerResource extends Controller
      */
     public function destroy(ProductSizes $productSize)
     {
-        if ($this->checkProduct($productSize->product_id)) {
-            return Resp::Error('انت لا تملك هذا المنتج');
-        }
-
         $productSize->delete();
         return Resp::Success('تم الحذف', $productSize);
     }
