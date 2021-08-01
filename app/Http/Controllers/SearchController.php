@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use App\Helper\ProducsDetails as Details;
 
 class SearchController extends Controller
@@ -24,9 +25,6 @@ class SearchController extends Controller
             return Resp::Error('لا توجد نائج', $result);
         }
 
-        // save the key word to search_keys database
-        event(new SearchKeysEvent($result[0]->name, $result[0]->product_id));
-
         // check if there is sort
         if (isset($validate->sort)) {
             $result = [
@@ -36,30 +34,15 @@ class SearchController extends Controller
             ][$validate->sort];
         }
 
-        // list of filter properties
-        $productsPropertyList = [
-            'color' => $result->whereNotNull('additional_description.color')->values()->pluck('additional_description.color'),
-            'countryOfMade' => $result->whereNotNull('additional_description.countryOfMade')->values()->pluck('additional_description.countryOfMade'),
-            'company' => $result->whereNotNull('additional_description.company')->values()->pluck('additional_description.company'),
-            'weight' => $result->whereNotNull('additional_description.weight')->values()->pluck('additional_description.weight'),
-            // 'expireDate' => $result->whereNotNull('additional_description.expireDate')->values()->pluck('additional_description.expireDate'),
-            'price' => ['from' => $result->min('price'), "to" => $result->max('price')],
-            'rate' => collect($result->whereNotNull('rate.*.rate')->pluck('rate.*.rate'))->filter(function ($value, $key) {
-                return !empty($value);
-            })->collapse(),
-            'discount' => collect($result->where('discount', '!=', 0)->values()->pluck('discount'))->unique()
-        ];
-
         // check if there is filter
         if (isset($validate->filter)) {
 
             foreach ($result as $key => $value) {
 
                 if (isset($validate->filter['color'])) {
-
                     $result = collect($result->filter(function ($value, $key) use ($validate) {
                         if ($value->additional_description) {
-                            return Str::contains($value->additional_description->color, $validate->filter['color']);
+                            return in_array($validate->filter['color'], $value->additional_description->color) == true;
                         }
                     })->all());
                 }
@@ -80,9 +63,9 @@ class SearchController extends Controller
                     $result = collect($result->where('discount', $validate->filter['discount'])->all());
                 }
 
-                // if (isset($validate->filter['expireDate'])) {
-                //     $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
-                // }
+                if (isset($validate->filter['expireDate'])) {
+                    $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
+                }
 
                 if (isset($validate->filter['price'])) {
                     $result = collect($result->whereBetween('price', [$validate->filter['price']['from'], $validate->filter['price']['to']])->all());
@@ -93,6 +76,22 @@ class SearchController extends Controller
                 }
             }
         }
+
+        // list of filter properties
+        $productsPropertyList = [
+            'color' => $result->whereNotNull('additional_description.color')->values()->pluck('additional_description.color'),
+            'countryOfMade' => $result->whereNotNull('additional_description.countryOfMade')->values()->pluck('additional_description.countryOfMade'),
+            'company' => $result->whereNotNull('additional_description.company')->values()->pluck('additional_description.company'),
+            'weight' => $result->whereNotNull('additional_description.weight')->values()->pluck('additional_description.weight'),
+            'expireDate' => $result->whereNotNull('additional_description.expireDate')->values()->pluck('additional_description.expireDate'),
+            'price' => ['from' => $result->min('price'), "to" => $result->max('price')],
+            'rate' => collect($result->whereNotNull('rate.*.rate')->pluck('rate.*.rate'))->filter(function ($value, $key) {
+                return !empty($value);
+            })->collapse(),
+            'discount' => collect($result->where('discount', '!=', 0)->values()->pluck('discount'))->unique()
+        ];
+
+        // return Resp::Success('awdaw', $result);
 
         // return final result
         return Resp::Success('تم', [

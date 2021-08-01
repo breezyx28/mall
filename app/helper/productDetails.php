@@ -7,7 +7,6 @@ class ProducsDetails
 
     public static function details($result)
     {
-
         $productsPropertyList = [
             'color' => $result->whereNotNull('additional_description.color')->values()->pluck('additional_description.color'),
             'countryOfMade' => $result->whereNotNull('additional_description.countryOfMade')->values()->pluck('additional_description.countryOfMade'),
