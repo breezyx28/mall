@@ -42,7 +42,7 @@ class SearchController extends Controller
             'countryOfMade' => $result->whereNotNull('additional_description.countryOfMade')->values()->pluck('additional_description.countryOfMade'),
             'company' => $result->whereNotNull('additional_description.company')->values()->pluck('additional_description.company'),
             'weight' => $result->whereNotNull('additional_description.weight')->values()->pluck('additional_description.weight'),
-            'expireDate' => $result->whereNotNull('additional_description.expireDate')->values()->pluck('additional_description.expireDate'),
+            // 'expireDate' => $result->whereNotNull('additional_description.expireDate')->values()->pluck('additional_description.expireDate'),
             'price' => ['from' => $result->min('price'), "to" => $result->max('price')],
             'rate' => collect($result->whereNotNull('rate.*.rate')->pluck('rate.*.rate'))->filter(function ($value, $key) {
                 return !empty($value);
@@ -80,9 +80,9 @@ class SearchController extends Controller
                     $result = collect($result->where('discount', $validate->filter['discount'])->all());
                 }
 
-                if (isset($validate->filter['expireDate'])) {
-                    $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
-                }
+                // if (isset($validate->filter['expireDate'])) {
+                //     $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
+                // }
 
                 if (isset($validate->filter['price'])) {
                     $result = collect($result->whereBetween('price', [$validate->filter['price']['from'], $validate->filter['price']['to']])->all());

@@ -35,7 +35,7 @@ class SearchRequest extends FormRequest
             'filter.company' => 'string|max:100',
             'filter.discount' => 'integer',
             'filter.weight' => 'integer',
-            'filter.expireDate' => 'date',
+            // 'filter.expireDate' => 'date',
             'filter.price' => 'array',
             'filter.price.from' => 'integer',
             'filter.price.to' => 'integer',
