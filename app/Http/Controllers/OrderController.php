@@ -35,7 +35,7 @@ class OrderController extends Controller
 
         $data = collect($orders->groupBy('orderNumber.orderNumber')->all());
 
-        return Resp::Success('تم', $data);
+        return Resp::Success('تم', collect($data)->sortKeysDesc()->all());
     }
 
     public function webOrders()
