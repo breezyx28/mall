@@ -177,7 +177,7 @@ class OrderController extends Controller
             $schema['status'] = $item->order[0]->status;
 
             return $schema;
-        })->sortByDesc('date');
+        })->sortByDesc('date')->values();
 
         try {
             return Resp::Success('ok', $result);
