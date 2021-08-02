@@ -28,8 +28,9 @@ class ProductSizesRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'sizes_array' => 'required|array',
-            'sizes_array.*.size' => 'required|string',
-            'sizes_array.*.unit' => 'required|string',
+            'sizes_array.*' => 'required|exists:sizes,id',
+            // 'sizes_array.*.size' => 'required|string',
+            // 'sizes_array.*.unit' => 'required|string',
         ];
     }
 
@@ -50,10 +51,12 @@ class ProductSizesRequest extends FormRequest
             'product_id.exists' => 'حقل رقم المنتج المرجعي غير موجود في السجلات',
             'sizes_array.required' => 'حقل مصفوفة المقاسات مطلوب',
             'sizes_array.array' => 'حقل مصفوفة المقاسات يجب ان يكون من النوع مصفوفة',
-            'sizes_array.*.size.required' => 'حقل المقاس مطلوب',
-            'sizes_array.*.size.string' => 'حقل المقاس يجب ان يكون نص',
-            'sizes_array.*.unit.required' => 'حقل الوحدة مطلوب',
-            'sizes_array.*.unit.string' => 'حقل الوحدة يجب ان يكون نص',
+            'sizes_array.*.required' => 'حقل رقم المقاس المرجعي مطلوب',
+            'sizes_array.*.exists' => 'حقل رقم المقاس المرجعي غير متوفر',
+            // 'sizes_array.*.size.required' => 'حقل المقاس مطلوب',
+            // 'sizes_array.*.size.string' => 'حقل المقاس يجب ان يكون نص',
+            // 'sizes_array.*.unit.required' => 'حقل الوحدة مطلوب',
+            // 'sizes_array.*.unit.string' => 'حقل الوحدة يجب ان يكون نص',
         ];
     }
 }

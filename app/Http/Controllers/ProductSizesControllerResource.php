@@ -6,10 +6,28 @@ use App\Helper\ResponseMessage as Resp;
 use App\Http\Requests\ProductSizesRequest;
 use App\Http\Requests\UpdateProductSizeRequest;
 use App\Models\ProductSizes;
+use App\Models\Size;
 use Illuminate\Http\Request;
 
 class ProductSizesControllerResource extends Controller
 {
+    // decomprize the ids of sizes
+    private function extract_ids(array $ids)
+    {
+        $results = \App\Models\Size::find($ids);
+
+        $data = [];
+        foreach ($results as $key => $value) {
+
+            $data[] = [
+                'unit' => $value['unit'],
+                'size' => $value['size'],
+            ];
+        }
+
+        return $data;
+    }
+
     public function checkProduct($product_id)
     {
         $get_store_id = \App\Models\Store::where('user_id', auth()->user()->id)->get()->all()[0]->id;
@@ -46,6 +64,12 @@ class ProductSizesControllerResource extends Controller
     public function store(ProductSizesRequest $request)
     {
         $validate = (object) $request->validated();
+
+        // ARRAY Sizes
+        $sizes_array = $this->extract_ids($validate->sizes_array);
+
+        // push array_sizes to validate
+        $validate->sizes_array = $sizes_array;
 
         $prodSizes = new \App\Models\ProductSizes();
 
@@ -91,6 +115,12 @@ class ProductSizesControllerResource extends Controller
     public function update(UpdateProductSizeRequest $request, ProductSizes $productSize)
     {
         $validate = (object) $request->validated();
+
+        // ARRAY Sizes
+        $sizes_array = $this->extract_ids($validate->sizes_array);
+
+        // push array_sizes to validate
+        $validate->sizes_array = $sizes_array;
 
         if (isset($validate->product_id)) {
             if ($this->checkProduct($validate->product_id)) {
