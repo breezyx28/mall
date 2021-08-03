@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $appends = ['final_price'];
-    protected $with = ['rate', 'material'];
+    protected $with = ['rate', 'material', 'product_sizes'];
 
     public function category()
     {
