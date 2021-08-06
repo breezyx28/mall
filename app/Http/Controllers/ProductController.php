@@ -277,7 +277,6 @@ class ProductController extends Controller
             }
 
             // important product (top rated)
-            // $max = $catProd->max('rate.*.rate');
             $topProd = $catProd->sortByDesc('rate.*.rate')->values()->all();
 
             // convert $topProd to collection
@@ -288,9 +287,7 @@ class ProductController extends Controller
                 'topProduct' => $col->map(function ($item, $key) {
                     return [
                         'id' => $item->id,
-                        'photo' => $item->photo,
-                        // 'price' => $item->price,
-                        // 'discounted_price' => $item->final_price
+                        'photo' => $item->photo
                     ];
                 })
             ];
@@ -339,7 +336,7 @@ class ProductController extends Controller
                         'id' => $item->id,
                         'photo' => $item->photo,
                         'price' => $item->price,
-                        'discounted_price' => $item->final_price
+                        'discounted_price' => $item->final_price == $item->price ? null : $item->final_price
                     ];
                 })
             ];

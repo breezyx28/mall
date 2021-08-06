@@ -151,7 +151,6 @@ class OrderController extends Controller
 
     public function ordersDetails()
     {
-
         $data =  \App\Models\OrdersNumber::with('order.product')->whereHas('order', function ($q) {
             $q->where('user_id', auth()->user()->id);
         })->get();
