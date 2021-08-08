@@ -22,8 +22,8 @@ class UpdateProductSizeRequest extends FormRequest
     public function rules()
     {
         return [
-            'sizes_array' => 'required|array',
-            'sizes_array.*' => 'required|exists:sizes,id|string',
+            'sizes_array' => 'array',
+            'sizes_array.*' => 'required_with:sizes_array|exists:sizes,id|string',
         ];
     }
 
@@ -42,7 +42,7 @@ class UpdateProductSizeRequest extends FormRequest
         return [
             'sizes_array.required' => 'حقل مصفوفة المقاسات مطلوب',
             'sizes_array.array' => 'حقل مصفوفة المقاسات يجب ان يكون من النوع مصفوفة',
-            'sizes_array.*.required' => 'حقل رقم المقاس المرجعي مطلوب',
+            'sizes_array.*.required_with' => 'حقل رقم المقاس المرجعي مطلوب مع حقل مصفوفةالمقاسات',
             'sizes_array.*.exists' => 'حقل رقم المقاس المرجعي غير متوفر',
         ];
     }

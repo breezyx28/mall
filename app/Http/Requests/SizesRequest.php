@@ -26,8 +26,9 @@ class SizesRequest extends FormRequest
     public function rules()
     {
         return [
-            'unit' => 'required|string|max:191',
-            'size' => 'required|string|max:191',
+            'unit' => 'required_without:measure|string|max:191',
+            'size' => 'required_without:measure|string|max:191',
+            'measure' => 'required_without:unit,size|string|max:191',
             'measureType' => 'required|string|max:4',
             'category_id' => 'required|exists:categories,id|integer'
         ];
@@ -52,6 +53,9 @@ class SizesRequest extends FormRequest
             'size.required' => 'حقل المقاس مطلوب',
             'size.string' => 'حقل المقاس يجب ان يكون نص',
             'size.max' => 'حقل المقاس تجاوز الطول المسموح به',
+            'measure.required' => 'حقل المقاس مطلوب',
+            'measure.string' => 'حقل المقاس يجب ان يكون نص',
+            'measure.max' => 'حقل المقاس تجاوز الطول المسموح به',
             'measureType.required' => 'حقل نوع المقاس مطلوب',
             'measureType.string' => 'حقل نوع المقاس يجب ان يكون نص',
             'measureType.max' => 'حقل المقاس تجاوز الطول المسموح به وهو ال4',

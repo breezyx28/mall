@@ -26,9 +26,9 @@ class ProductSizesRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'sizes_array' => 'required|array',
-            'sizes_array.*' => 'required|exists:sizes,id',
+            'product_id' => 'exists:products,id',
+            'sizes_array' => 'array',
+            'sizes_array.*' => 'required_with:sizes_array|exists:sizes,id',
             // 'sizes_array.*.size' => 'required|string',
             // 'sizes_array.*.unit' => 'required|string',
         ];
