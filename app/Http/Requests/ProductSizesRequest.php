@@ -28,7 +28,7 @@ class ProductSizesRequest extends FormRequest
         return [
             'product_id' => 'exists:products,id',
             'sizes_array' => 'array',
-            'sizes_array.*' => 'required_with:sizes_array|exists:sizes,id',
+            'sizes_array.*' => 'required_with:sizes_array|string|exists:sizes,id',
             // 'sizes_array.*.size' => 'required|string',
             // 'sizes_array.*.unit' => 'required|string',
         ];
