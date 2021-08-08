@@ -28,6 +28,7 @@ class UpdateSizesRequest extends FormRequest
         return [
             'unit' => 'string|max:191',
             'size' => 'string|max:191',
+            'measure' => 'string|max:191',
             'measureType' => 'string|max:4',
         ];
     }
@@ -47,8 +48,10 @@ class UpdateSizesRequest extends FormRequest
         return [
             'unit.string' => 'حقل وحدة القياس يجب ان يكون نص',
             'unit.max' => 'حقل وحدة القياس تجاوز الطول المسموح به',
-            'size.string' => 'حقل المقاس يجب ان يكون نص',
-            'size.max' => 'حقل المقاس تجاوز الطول المسموح به',
+            'size.string' => 'حقل الحجم يجب ان يكون نص',
+            'size.max' => 'حقل الحجم تجاوز الطول المسموح به',
+            'measure.string' => 'حقل المقاس يجب ان يكون نص',
+            'measure.max' => 'حقل المقاس تجاوز الطول المسموح به',
             'measureType.string' => 'حقل نوع المقاس يجب ان يكون نص',
             'measureType.max' => 'حقل المقاس تجاوز الطول المسموح به وهو ال4',
         ];
