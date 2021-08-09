@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\ResponseMessage as Resp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -20,6 +21,13 @@ class CategoryController extends Controller
         $data = \App\Models\Category::all()->groupBy($validate->groupBy)->take($validate->limit);
 
         return Resp::Success('ok', $data);
+    }
+
+    public function categoryNames()
+    {
+        $data = DB::table('categories')->select('name')->groupBy('name')->get();
+
+        return Resp::Success('تم', $data);
     }
 
     public function getCategories()

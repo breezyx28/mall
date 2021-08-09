@@ -13,7 +13,7 @@ class SizesController extends Controller
     {
 
         $validate = (object) $request->validate([
-            'key' => 'required|in:id,unit,size,measureType,category_id',
+            'key' => 'required|in:id,unit,size,measureType,category_name',
             'value' => 'string'
         ]);
 

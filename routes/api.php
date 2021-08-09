@@ -123,6 +123,7 @@ Route::group(['prefix' => GUEST], function () {
     // categories
     Route::apiResource('categories', CategoryControllerResource::class)->only('index', 'show');
     Route::get('categoryList', [CategoryController::class, 'categoryList']);
+    Route::get('categoryNames', [CategoryController::class, 'categoryNames']);
 
     // sizes
     Route::apiResource('sizes', SizesControllerResource::class)->only('index');
