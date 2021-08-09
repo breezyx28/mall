@@ -17,7 +17,7 @@ class SizesControllerResource extends Controller
      */
     public function index()
     {
-        $all = Size::with('category')->get();
+        $all = Size::all();
         return Resp::Success('تم', $all);
     }
 
@@ -53,7 +53,7 @@ class SizesControllerResource extends Controller
      */
     public function show(Size $size)
     {
-        $size->load('category');
+        // $size->load('category');
         return Resp::Success('تم', $size);
     }
 
