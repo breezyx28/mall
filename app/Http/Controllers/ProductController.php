@@ -281,6 +281,8 @@ class ProductController extends Controller
 
             // convert $topProd to collection
             $col = collect($topProd)->slice(1, 5)->values();
+            $product = collect($topProd)->slice(1, 10)->values();
+
             $arr[] = [
                 'watchAll' => $catName,
                 'imgs' => $threeImgs,
@@ -288,6 +290,17 @@ class ProductController extends Controller
                     return [
                         'id' => $item->id,
                         'photo' => $item->photo
+                    ];
+                }),
+                'product' => $product->map(function ($item, $key) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'note' => $item->note,
+                        'description' => $item->description,
+                        'photo' => $item->photo,
+                        'price' => $item->price,
+                        'discounted_price' => $item->final_price
                     ];
                 })
             ];
