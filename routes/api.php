@@ -121,7 +121,7 @@ Route::group(['prefix' => GUEST], function () {
     Route::apiResource('states', StateControllerResource::class)->only('index');
 
     // categories
-    Route::apiResource('categories', CategoryControllerResource::class)->only('index');
+    Route::apiResource('categories', CategoryControllerResource::class)->only('index', 'show');
     Route::get('categoryList', [CategoryController::class, 'categoryList']);
 
     // sizes
