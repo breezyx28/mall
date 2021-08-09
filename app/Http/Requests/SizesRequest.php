@@ -30,7 +30,7 @@ class SizesRequest extends FormRequest
             'size' => 'required_without:measure|string|max:191',
             'measure' => 'required_without:unit,size|string|max:191',
             'measureType' => 'required|string|max:4',
-            'category_id' => 'required|exists:categories,id|integer'
+            'category_name' => 'required|exists:categories,name|string'
         ];
     }
 
