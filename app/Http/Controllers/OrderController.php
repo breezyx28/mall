@@ -172,7 +172,7 @@ class OrderController extends Controller
             $schema['products'] = count($item->order);
             $schema['orderNumber'] = $item->orderNumber;
             $schema['total'] = collect($item->order)->sum('product.final_price');
-            $schema['deliverPrice'] = collect($item->order)->sum('state.deliverPrice');
+            $schema['deliverPrice'] = $item->order[0]->state->deliverPrice;
             $schema['status'] = $item->order[0]->status;
 
             return $schema;
