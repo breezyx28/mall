@@ -35,9 +35,8 @@ class ProductsRequest extends FormRequest
             'photo' => 'required|image|mimes:jpg,jpeg,png',
             'description' => 'string',
             'note' => 'string',
-            'discount' => 'integer|max:100|min:0',
-            'bar_code' => 'string|max:191',
-            // 'addetionalPrice' => 'string',        يفترض تكون الإضافة من قبل الأدمن
+            'discount' => 'nullable|integer|max:100|min:0',
+            'bar_code' => 'nullable|string|max:191',
             'category_id' => 'required|integer|exists:categories,id',
             'store_id' => 'required|integer|exists:stores,id',
             'offerText' => 'string|max:191',

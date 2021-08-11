@@ -47,10 +47,10 @@ class SizesRequest extends FormRequest
     public function messages()
     {
         return [
-            'unit.required' => 'حقل وحدة القياس مطلوب',
+            'unit.required_without' => 'حقل وحدة القياس مطلوب',
             'unit.string' => 'حقل وحدة القياس يجب ان يكون نص',
             'unit.max' => 'حقل وحدة القياس تجاوز الطول المسموح به',
-            'size.required' => 'حقل المقاس مطلوب',
+            'size.required_without' => 'حقل المقاس مطلوب',
             'size.string' => 'حقل المقاس يجب ان يكون نص',
             'size.max' => 'حقل المقاس تجاوز الطول المسموح به',
             'measure.required' => 'حقل المقاس مطلوب',
@@ -59,9 +59,9 @@ class SizesRequest extends FormRequest
             'measureType.required' => 'حقل نوع المقاس مطلوب',
             'measureType.string' => 'حقل نوع المقاس يجب ان يكون نص',
             'measureType.max' => 'حقل المقاس تجاوز الطول المسموح به وهو ال4',
-            'category_id.required' => 'حقل رقم الصنف المرجعي مطلوب',
-            'category_id.exists' => 'حقل رقم الصنف المرجعي غير موجود في السجلات',
-            'category_id.integer' => 'حقل رقم الصنف المرجعي يجب ان يكون رقم صحيح',
+            'category_name.required_without' => 'حقل رقم الصنف المرجعي مطلوب',
+            'category_name.exists' => 'حقل رقم الصنف المرجعي غير موجود في السجلات',
+            'category_name.integer' => 'حقل رقم الصنف المرجعي يجب ان يكون رقم صحيح',
         ];
     }
 }
