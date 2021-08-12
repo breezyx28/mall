@@ -6,6 +6,7 @@ use App\Events\SearchKeysEvent;
 use App\Helper\ResponseMessage as Resp;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\AndroidSearchRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
@@ -13,9 +14,8 @@ use App\Helper\ProducsDetails as Details;
 
 class SearchController extends Controller
 {
-    public function search(SearchRequest $request)
+    public function search(AndroidSearchRequest $request)
     {
-
         $validate = (object) $request->validated();
 
         $result = \App\Models\Product::with('category', 'store', 'product_sizes', 'additional_description')->where('status', '!=', 0)->search($validate->search)->limit(50)->get();
@@ -34,46 +34,42 @@ class SearchController extends Controller
             ][$validate->sort];
         }
 
-        // check if there is filter
-        if (isset($validate->filter)) {
+        foreach ($result as $key => $value) {
 
-            foreach ($result as $key => $value) {
+            if (isset($validate->color)) {
+                $result = collect($result->filter(function ($value, $key) use ($validate) {
+                    if ($value->additional_description) {
+                        return in_array($validate->color, $value->additional_description->color) == true;
+                    }
+                })->all());
+            }
 
-                if (isset($validate->filter['color'])) {
-                    $result = collect($result->filter(function ($value, $key) use ($validate) {
-                        if ($value->additional_description) {
-                            return in_array($validate->filter['color'], $value->additional_description->color) == true;
-                        }
-                    })->all());
-                }
+            if (isset($validate->countryOfMade)) {
+                $result = collect($result->where('additional_description.countryOfMade', $validate->countryOfMade)->all());
+            }
 
-                if (isset($validate->filter['countryOfMade'])) {
-                    $result = collect($result->where('additional_description.countryOfMade', $validate->filter['countryOfMade'])->all());
-                }
+            if (isset($validate->company)) {
+                $result = collect($result->where('additional_description.company', $validate->company)->all());
+            }
 
-                if (isset($validate->filter['company'])) {
-                    $result = collect($result->where('additional_description.company', $validate->filter['company'])->all());
-                }
+            if (isset($validate->weight)) {
+                $result = collect($result->where('additional_description.weight', $validate->weight)->all());
+            }
 
-                if (isset($validate->filter['weight'])) {
-                    $result = collect($result->where('additional_description.weight', $validate->filter['weight'])->all());
-                }
+            if (isset($validate->discount)) {
+                $result = collect($result->where('discount', $validate->discount)->all());
+            }
 
-                if (isset($validate->filter['discount'])) {
-                    $result = collect($result->where('discount', $validate->filter['discount'])->all());
-                }
+            // if (isset($validate->filter['expireDate'])) {
+            //     $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
+            // }
 
-                if (isset($validate->filter['expireDate'])) {
-                    $result = collect($result->where('additional_description.expireDate', $validate->filter['expireDate'])->all());
-                }
+            if (isset($validate->price_from) == true && isset($validate->price_to) == true) {
+                $result = collect($result->whereBetween('price', [$validate->price_from, $validate->price_to])->all());
+            }
 
-                if (isset($validate->filter['price'])) {
-                    $result = collect($result->whereBetween('price', [$validate->filter['price']['from'], $validate->filter['price']['to']])->all());
-                }
-
-                if (isset($validate->filter['rate'])) {
-                    $result = collect($result->where('rate.0.rate', $validate->filter['rate'])->all());
-                }
+            if (isset($validate->rate)) {
+                $result = collect($result->where('rate.0.rate', $validate->rate)->all());
             }
         }
 
